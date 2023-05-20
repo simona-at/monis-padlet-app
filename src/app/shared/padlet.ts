@@ -14,7 +14,7 @@ export { User } from "./user";
 
 export class Padlet {
   constructor(
-    public id: number,
+    public id: string,
     public title: string,
     public is_private: boolean,
     public description?: string,

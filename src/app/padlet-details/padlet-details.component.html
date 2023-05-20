@@ -1,0 +1,53 @@
+
+<div class="ui grid" *ngIf="padlet">
+  <div class="row">
+    <a class="ui labeled icon" [routerLink]="'/board'">
+      <i class="left chevron icon"></i>
+      Zurück zur Übersicht
+    </a>
+  </div>
+  <div class="row">
+    <div class="six wide column">
+      <div *ngFor="let image of padlet?.images" >
+        <img [src]="image.url" [alt]="image.title" style="width: 100%;">
+      </div>
+    </div>
+    <div class="eight wide column">
+      <h1>{{padlet.title}}</h1>
+      <p>
+        <span>{{padlet.created_at}}</span>
+      <span *ngFor="let user of padlet?.users; let isFirst = first">
+        <span *ngIf="isFirst"> ({{user.first_name}} {{user.last_name}})</span>
+      </span>
+        <span *ngIf="padlet?.users == null">
+          <span> (Anonym)</span>
+        </span>
+      </p>
+      <p>{{padlet.description}}</p>
+      <hr>
+
+      <span class="right floated">
+        <i class="heart outline like icon"></i>
+        <span *ngIf="padlet?.likes == null">0</span>
+        <span *ngFor="let like of padlet?.likes; count as c; last as l">
+          <span *ngIf="l">{{c}}</span>
+        </span>
+        Likes
+      </span>
+
+      <span>
+        <i class="comment icon"></i>
+        <span *ngIf="padlet?.likes == null">0</span>
+        <span *ngFor="let comment of padlet?.comments; count as c; last as l">
+          <span *ngIf="l">{{c}}</span>
+        </span>
+        Kommentare
+      </span>
+
+
+    </div>
+    <div class="two wide column">
+      <h3>Button zum Bearbeiten und zum Löschen</h3>
+    </div>
+  </div>
+</div>

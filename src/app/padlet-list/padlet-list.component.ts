@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { Padlet, Image, Comment, Like, User } from "../shared/padlet";
+import {PadletBoardService} from "../shared/padlet-board.service";
 
 @Component({
   selector: 'bs-padlet-list',
@@ -11,44 +12,18 @@ export class PadletListComponent implements OnInit {
 
   padlets : Padlet[] = [];
 
+  // @Output() showDetailsEvent = new EventEmitter<Padlet>();
+
+  constructor(private pb: PadletBoardService) {
+  }
+
   ngOnInit(): void {
 
-    this.padlets = [
-      new Padlet(
-        1,
-        'ein Titel',
-        false,
-        'Beschreibung',
-        [new Image(1, 'https://ng-buch.de/cover1.jpg', 'titel')]
-      ),
-      new Padlet(
-        1,
-        'ein Titel',
-        false,
-        'Beschreibung',
-        [new Image(1, 'https://ng-buch.de/cover1.jpg', 'titel')],
-        [new User(1, 'Simona', 'Ascher', 'email', 'passwort'), new User(2, 'Michael', 'Keplinger', 'email', 'passwort')] ,
-        [new Comment(1, "Kommentar", 2)],
-        [new Like(1), new Like(2)]
-      ),
-      new Padlet(
-        1,
-        'ein Titel',
-        false,
-        'Beschreibung',
-        [new Image(1, 'https://ng-buch.de/cover1.jpg', 'titel')],
-        [new User(1, 'Simona', 'Ascher', 'email', 'passwort')] ,
-      ),
-      new Padlet(
-        1,
-        'ein Titel',
-        false,
-        'Beschreibung',
-        [new Image(1, 'https://ng-buch.de/cover1.jpg', 'titel')],
-        [new User(1, 'Simona', 'Ascher', 'email', 'passwort')] ,
-      )
-    ];
+    this.padlets = this.pb.getAll();
 
-    console.log(this.padlets);
   }
+
+  // showDetails(padlet: Padlet){
+  //   this.showDetailsEvent.emit(padlet);
+  // }
 }

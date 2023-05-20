@@ -11,7 +11,7 @@
   <img *ngIf="padlet && padlet.images && padlet.images[0]" [src]="padlet.images[0].url">
 </div>
 <div class="content">
-  <a class="header">{{ padlet?.title }}</a>
+  <h3 class="header">{{ padlet?.title }}</h3>
 </div>
 <div class="extra content">
       <span class="right floated">
@@ -22,10 +22,10 @@
         </span>
       Likes
       </span>
-  <i class="comment icon"></i>
-  <span *ngIf="padlet?.likes == null">0</span>
-  <span *ngFor="let comment of padlet?.comments; count as c; last as l">
-    <span *ngIf="l">{{c}}</span>
-  </span>
-   Kommentare
+      <i class="comment icon"></i>
+      <span *ngIf="padlet?.likes == null">0</span>
+      <span *ngFor="let comment of padlet?.comments; count as c; last as l">
+        <span *ngIf="l">{{c}}</span>
+      </span>
+       Kommentare
 </div>
