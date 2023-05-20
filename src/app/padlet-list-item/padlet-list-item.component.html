@@ -1,31 +1,33 @@
-<div class="content">
-  <div class="right floated meta">{{padlet?.created_at | date:"dd.MM.yyyy"}}</div>
-  <span *ngFor="let user of padlet?.users; let isFirst = first">
-    <span *ngIf="isFirst">{{user.first_name}} {{user.last_name}}</span>
-  </span>
-  <span *ngIf="padlet?.users == null">
-    <span>Anonym</span>
-  </span>
-</div>
-<div class="image">
-  <img *ngIf="padlet && padlet.images && padlet.images[0]" [src]="padlet.images[0].url">
-</div>
-<div class="content">
-  <h3 class="header">{{ padlet?.title }}</h3>
-</div>
-<div class="extra content">
-      <span class="right floated">
-        <i class="heart outline like icon"></i>
-        <span *ngIf="padlet?.likes == null">0</span>
-        <span *ngFor="let like of padlet?.likes; count as c; last as l">
+<div class="ui fluid card">
+  <div class="content">
+    <div class="right floated meta">{{padlet?.created_at | date:"dd.MM.yyyy"}}</div>
+    <span *ngFor="let user of padlet?.users; let isFirst = first">
+      <span *ngIf="isFirst">{{user.first_name}} {{user.last_name}}</span>
+    </span>
+    <span *ngIf="padlet?.users == null">
+      <span>Anonym</span>
+    </span>
+  </div>
+  <div class="image">
+    <img *ngIf="padlet && padlet.images && padlet.images[0]" [src]="padlet.images[0].url">
+  </div>
+  <div class="content">
+    <h3 class="header">{{ padlet?.title }}</h3>
+  </div>
+  <div class="extra content">
+        <span class="right floated">
+          <i class="heart outline like icon"></i>
+          <span *ngIf="padlet?.likes == null">0</span>
+          <span *ngFor="let like of padlet?.likes; count as c; last as l">
+            <span *ngIf="l">{{c}}</span>
+          </span>
+        Likes
+        </span>
+        <i class="comment icon"></i>
+        <span *ngIf="padlet?.comments == null">0</span>
+        <span *ngFor="let comment of padlet?.comments; count as c; last as l">
           <span *ngIf="l">{{c}}</span>
         </span>
-      Likes
-      </span>
-      <i class="comment icon"></i>
-      <span *ngIf="padlet?.comments == null">0</span>
-      <span *ngFor="let comment of padlet?.comments; count as c; last as l">
-        <span *ngIf="l">{{c}}</span>
-      </span>
-      Kommentare
+        Kommentare
+  </div>
 </div>

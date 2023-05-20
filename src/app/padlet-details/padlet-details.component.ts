@@ -3,6 +3,7 @@ import {Padlet} from '../shared/padlet';
 import {PadletBoardService} from "../shared/padlet-board.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PadletFactory} from "../shared/padlet-factory";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'bs-padlet-details',
@@ -18,7 +19,7 @@ export class PadletDetailsComponent {
   // @Output() showListEvent = new EventEmitter<any>();
 
 
-  constructor(private pb: PadletBoardService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {}
 
   ngOnInit(){
     const params = this.route.snapshot.params;
@@ -40,6 +41,7 @@ export class PadletDetailsComponent {
   removePadlet(){
     if( confirm("Soll dieses Padlet wirklich gelöscht werden?")){
       this.pb.remove(this.padlet.id).subscribe((res:any) => this.router.navigate(['../'], {relativeTo: this.route}));
+      this.toastr.success('Padlet wurde erfolgreich gelöscht');
     }
   }
 

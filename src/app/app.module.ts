@@ -10,16 +10,19 @@ import {AppRoutingModule} from "./app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
+import { PadletFormComponent } from './padlet-form/padlet-form.component';
+import { ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
     PadletListComponent,
     PadletListItemComponent,
-    PadletDetailsComponent
+    PadletDetailsComponent,
+    PadletFormComponent
   ],
   imports: [
-    BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, ToastrModule.forRoot()
+    BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, ToastrModule.forRoot(), ReactiveFormsModule
   ],
   providers: [PadletBoardService],
   bootstrap: [AppComponent]

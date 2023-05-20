@@ -1,3 +1,4 @@
-<div class="ui cards">
-  <a *ngFor="let padlet of padlets" class="card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
+<div class="ui four column grid">
+    <a *ngFor="let padlet of padlets" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
 </div>
+
