@@ -14,19 +14,17 @@ export { User } from "./user";
 
 export class Padlet {
   constructor(
-    public id: string,
+    public id: number,
     public title: string,
     public is_private: boolean,
+    public created_at: Date,
     public description?: string,
     public images?: Image[],
     public users?: User[],
     public comments?: Comment[],
     public likes?: Like[],
-    public created_at?: string,
   ) {
-    this.created_at = new Date().toLocaleDateString();
   }
-
 
 }
 

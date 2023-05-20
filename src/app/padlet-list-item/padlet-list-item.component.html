@@ -1,5 +1,5 @@
 <div class="content">
-  <div class="right floated meta">{{ padlet?.created_at }}</div>
+  <div class="right floated meta">{{padlet?.created_at | date:"dd.MM.yyyy"}}</div>
   <span *ngFor="let user of padlet?.users; let isFirst = first">
     <span *ngIf="isFirst">{{user.first_name}} {{user.last_name}}</span>
   </span>

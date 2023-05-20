@@ -26,4 +26,8 @@ export class PadletListComponent implements OnInit {
   // showDetails(padlet: Padlet){
   //   this.showDetailsEvent.emit(padlet);
   // }
+
+  numberToString(id: number){
+    return String(id);
+  }
 }

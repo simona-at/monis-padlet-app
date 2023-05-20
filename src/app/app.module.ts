@@ -7,6 +7,7 @@ import { PadletListItemComponent } from './padlet-list-item/padlet-list-item.com
 import { PadletDetailsComponent } from './padlet-details/padlet-details.component';
 import {PadletBoardService} from "./shared/padlet-board.service";
 import {AppRoutingModule} from "./app-routing.module";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import {AppRoutingModule} from "./app-routing.module";
     PadletDetailsComponent
   ],
   imports: [
-    BrowserModule, AppRoutingModule
+    BrowserModule, AppRoutingModule, HttpClientModule
   ],
   providers: [PadletBoardService],
   bootstrap: [AppComponent]
