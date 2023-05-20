@@ -8,6 +8,8 @@ import { PadletDetailsComponent } from './padlet-details/padlet-details.componen
 import {PadletBoardService} from "./shared/padlet-board.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {HttpClientModule} from "@angular/common/http";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -17,7 +19,7 @@ import {HttpClientModule} from "@angular/common/http";
     PadletDetailsComponent
   ],
   imports: [
-    BrowserModule, AppRoutingModule, HttpClientModule
+    BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, ToastrModule.forRoot()
   ],
   providers: [PadletBoardService],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { Padlet, Image, Comment, Like, User } from "../shared/padlet";
 import {PadletBoardService} from "../shared/padlet-board.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'bs-padlet-list',
@@ -14,12 +15,13 @@ export class PadletListComponent implements OnInit {
 
   // @Output() showDetailsEvent = new EventEmitter<Padlet>();
 
-  constructor(private pb: PadletBoardService) {
+  constructor(private pb: PadletBoardService, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
     // this.padlets = this.pb.getAll();
     this.pb.getAll().subscribe(res => this.padlets = res);
+    this.toastr.success('Padlets wurden erfolgreich geladen');
   }
 
   // showDetails(padlet: Padlet){
