@@ -7,11 +7,13 @@
     </a>
   </div>
   <div class="row">
+
     <div class="six wide column">
       <div *ngFor="let image of padlet?.images" >
         <img [src]="image.url" [alt]="image.title" style="width: 100%;">
       </div>
     </div>
+
     <div class="eight wide column">
       <h1>{{padlet.title}}</h1>
       <p>
@@ -25,7 +27,6 @@
       </p>
       <p>{{padlet.description}}</p>
       <hr>
-
       <span class="right floated">
         <i class="heart outline like icon"></i>
         <span *ngIf="padlet?.likes == null">0</span>
@@ -34,25 +35,25 @@
         </span>
         Likes
       </span>
-
       <span>
-        <i class="comment icon"></i>
+        <i class="comment outline icon"></i>
         <span *ngIf="padlet?.likes == null">0</span>
         <span *ngFor="let comment of padlet?.comments; count as c; last as l">
           <span *ngIf="l">{{c}}</span>
         </span>
         Kommentare
       </span>
-
-
     </div>
+
     <div class="two wide column">
-      <button class="ui tiny green labeled icon button" [routerLink]="['../../edit/', padlet.id]">
+      <button class="ui tiny green labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
         <i class="write icon"></i> Padlet bearbeiten
       </button>
-      <button class="ui tiny red labeled icon button" (click)="removePadlet()">
+      <button class="ui tiny red labeled icon button fluid" (click)="removePadlet()">
         <i class="remove icon"></i> Padlet löschen
       </button>
+      <button class="ui toggle button fluid" (click)="like()">LIKE</button>
     </div>
+
   </div>
 </div>

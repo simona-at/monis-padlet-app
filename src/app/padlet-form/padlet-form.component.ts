@@ -6,6 +6,7 @@ import {Image} from "../shared/image";
 import {PadletBoardService} from "../shared/padlet-board.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PadletFormErrorMessages} from "./padlet-form-error-messages";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'bs-padlet-form',
@@ -25,7 +26,7 @@ export class PadletFormComponent implements OnInit{
   isUpdatingPadlet= false;
   images : FormArray;
 
-  constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {
     this.padletForm = this.fb.group({});
     this.images = this.fb.array([]);
   }
@@ -114,6 +115,7 @@ export class PadletFormComponent implements OnInit{
           relativeTo: this.route
         });
       });
+      this.toastr.success('Padlet wurde bearbeitet!');
     }
     else{
       // padlet.user_id = 1;
@@ -125,6 +127,7 @@ export class PadletFormComponent implements OnInit{
           relativeTo: this.route
         });
       });
+      this.toastr.success('Padlet wurde erstellt!');
     }
   }
 

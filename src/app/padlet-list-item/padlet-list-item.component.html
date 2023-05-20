@@ -16,14 +16,14 @@
   </div>
   <div class="extra content">
         <span class="right floated">
-          <i class="heart outline like icon"></i>
+          <i class="heart outline icon"></i>
           <span *ngIf="padlet?.likes == null">0</span>
           <span *ngFor="let like of padlet?.likes; count as c; last as l">
             <span *ngIf="l">{{c}}</span>
           </span>
         Likes
         </span>
-        <i class="comment icon"></i>
+        <i class="comment outline icon"></i>
         <span *ngIf="padlet?.comments == null">0</span>
         <span *ngFor="let comment of padlet?.comments; count as c; last as l">
           <span *ngIf="l">{{c}}</span>

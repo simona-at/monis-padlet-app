@@ -34,6 +34,14 @@ export class PadletBoardService {
     return this.http.delete(`${this.api}/padlets/${id}`).pipe(retry(3)).pipe(catchError(this.errorHandler));
   }
 
+  like (padlet : Padlet) : Observable<any> {
+    return this.http.put(`${this.api}/padlets/likes/${padlet.id}`, padlet).pipe(retry(3)).pipe(catchError(this.errorHandler));
+  }
+
+  dislike (padlet : Padlet, user_id: number) : Observable<any> {
+    return this.http.delete(`${this.api}/padlets/likes/${padlet.id}/${user_id}`).pipe(retry(3)).pipe(catchError(this.errorHandler));
+  }
+
 
   private errorHandler(error: Error | any) : Observable<any>{
     return throwError(error);
