@@ -18,9 +18,8 @@ export class PadletListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.padlets = this.pb.getAll();
-
+    // this.padlets = this.pb.getAll();
+    this.pb.getAll().subscribe(res => this.padlets = res);
   }
 
   // showDetails(padlet: Padlet){

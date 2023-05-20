@@ -23,9 +23,9 @@
       Likes
       </span>
       <i class="comment icon"></i>
-      <span *ngIf="padlet?.likes == null">0</span>
+      <span *ngIf="padlet?.comments == null">0</span>
       <span *ngFor="let comment of padlet?.comments; count as c; last as l">
         <span *ngIf="l">{{c}}</span>
       </span>
-       Kommentare
+      Kommentare
 </div>

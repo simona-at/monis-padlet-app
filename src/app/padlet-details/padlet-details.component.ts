@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Padlet} from '../shared/padlet';
 import {PadletBoardService} from "../shared/padlet-board.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {PadletFactory} from "../shared/padlet-factory";
 
 @Component({
   selector: 'bs-padlet-details',
@@ -11,17 +12,19 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class PadletDetailsComponent {
 
-  padlet: Padlet | undefined;
+  padlet: Padlet = PadletFactory.empty();
 
   // @Input() padlet : Padlet | undefined
   // @Output() showListEvent = new EventEmitter<any>();
 
 
-  constructor(private pb: PadletBoardService, private route: ActivatedRoute) {}
+  constructor(private pb: PadletBoardService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(){
     const params = this.route.snapshot.params;
-    this.padlet = this.pb.getSingle(params['id']);
+    // this.padlet = this.pb.getSingle(params['id']);
+    this.pb.getSingle(params['id']).subscribe((p:Padlet) => this.padlet = p);
+    console.log("test");
   }
 
   // showPadletList(){
@@ -32,6 +35,13 @@ export class PadletDetailsComponent {
   // getLikes(num:number){
   //
   // }
+
+
+  removePadlet(){
+    if( confirm("Soll dieses Padlet wirklich gelöscht werden?")){
+      this.pb.remove(this.padlet.id).subscribe((res:any) => this.router.navigate(['../'], {relativeTo: this.route}));
+    }
+  }
 
 
 }
