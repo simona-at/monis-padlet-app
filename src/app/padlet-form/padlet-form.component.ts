@@ -59,13 +59,14 @@ export class PadletFormComponent implements OnInit{
     console.log(this.userservice.getCurrentUser());
 
 
-    if(this.isUpdatingPadlet){
+    if(this.isUpdatingPadlet || !this.userservice.getCurrentUser()){
       this.padletForm = this.fb.group({
         id : this.padlet.id,
         title: [this.padlet.title, Validators.required],
         description: [this.padlet.description],
         images: this.images,
-        is_private : this.padlet.is_private
+        is_private : this.padlet.is_private,
+        users : []
       });
     } else {
       this.padletForm = this.fb.group({
@@ -120,30 +121,12 @@ export class PadletFormComponent implements OnInit{
     }
   }
 
-  // setCurrentUserToPadlet(){
-  //   console.log(this.userservice.getCurrentUser());
-  //   if(this.userservice.getCurrentUser()) {
-  //     const currentUser = this.userservice.getCurrentUser();
-  //     if (this.padlet.users && currentUser) {
-  //       this.padlet.users.push(new User(currentUser.id, currentUser?.first_name, currentUser?.last_name));
-  //       console.log(this.padlet);
-  //     }
-  //   }
-  //   //
-  //   // if(this.userservice.getCurrentUser()) {
-  //   //   const owner = [this.userservice.getCurrentUserId()];
-  //   //   if (this.padlet.users) {
-  //   //     this.padlet.users.push(owner);
-  //   //   }
-  //   // }
-  // }
-
   submitForm(){
     this.padletForm.value.images = this.padletForm.value.images.filter(
       (thumbnail: {url :string}) => thumbnail.url
     );
 
-    if(!this.isUpdatingPadlet){
+    if(!this.isUpdatingPadlet  && this.userservice.getCurrentUser()){
       let owner;
       const currentUser = this.userservice.getCurrentUser();
       if(this.userservice.getCurrentUser()) {
@@ -154,23 +137,7 @@ export class PadletFormComponent implements OnInit{
       this.padletForm.value.users.push(owner);
     }
 
-
     const padlet : Padlet = PadletFactory.fromObject(this.padletForm.value);
-    // console.log(this.userservice.getCurrentUser());
-    //
-    // if(this.userservice.getCurrentUser()) {
-    //   const currentUser = this.userservice.getCurrentUser();
-    //   console.log(padlet);
-    //   if (padlet.users && currentUser) {
-    //     padlet.users.push(new User(currentUser.id, currentUser?.first_name, currentUser?.last_name));
-    //     console.log(padlet);
-    //   }
-    //   if(padlet.users == null){
-    //
-    //   }
-    // }
-    //     console.log(padlet);
-
 
     if(this.isUpdatingPadlet) {
       this.pb.update(padlet).subscribe(res => {
@@ -181,12 +148,9 @@ export class PadletFormComponent implements OnInit{
       this.toastr.success('Padlet wurde bearbeitet!');
     }
     else{
-      // padlet.user_id = 1;
-      // console.log(book);
-      // this.setCurrentUserToPadlet();
 
-      console.log(this.padletForm);
-      console.log(padlet);
+      // console.log(this.padletForm);
+      // console.log(padlet);
 
       this.pb.create(padlet).subscribe(res =>{
         this.padlet = PadletFactory.empty();

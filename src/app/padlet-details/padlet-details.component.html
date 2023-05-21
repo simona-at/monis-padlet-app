@@ -56,7 +56,7 @@
       <button *ngIf="authservice.isLoggedIn()" class="ui tiny red labeled icon button fluid" (click)="removePadlet()">
         <i class="remove icon"></i> Padlet löschen
       </button>
-      <button class="ui primary basic button fluid {{this.likeBtn}}" (click)="like()">LIKE</button>
+      <button *ngIf="authservice.isLoggedIn()" class="ui primary basic button fluid {{this.likeBtn}}" (click)="like()">LIKE</button>
     </div>
 
   </div>

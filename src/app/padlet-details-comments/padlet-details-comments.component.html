@@ -1,5 +1,5 @@
 
-<form  class="ui large form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
+<form *ngIf="authservice.isLoggedIn()"  class="ui large form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
   <div class="field">
 <!--    <label>Neuer Kommentar</label>-->
     <textarea formControlName="comment" rows="3" placeholder="Neuen Kommentar schreiben…"></textarea>

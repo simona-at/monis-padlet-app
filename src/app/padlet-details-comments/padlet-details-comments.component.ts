@@ -30,7 +30,7 @@ export class PadletDetailsCommentsComponent implements OnInit{
               private router: Router,
               private toastr : ToastrService,
               public userservice : UserService,
-              private authservice : AuthenticationService) {
+              public authservice : AuthenticationService) {
     this.commentForm = this.fb.group({});
   }
 
