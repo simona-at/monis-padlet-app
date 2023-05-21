@@ -16,11 +16,9 @@ import {PadletFactory} from "../shared/padlet-factory";
 export class PadletDetailsCommentsComponent implements OnInit{
 
   @Input() padlet : Padlet | undefined
+
   commentForm : FormGroup;
-
   users : User[]= [];
-
-  // comments : Comment[] = [];
   renderComments = true;
 
   constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {
@@ -30,8 +28,6 @@ export class PadletDetailsCommentsComponent implements OnInit{
   ngOnInit(): void {
 
     this.getUsersNames();
-
-
 
     if(this.padlet) {
       this.commentForm = this.fb.group({
