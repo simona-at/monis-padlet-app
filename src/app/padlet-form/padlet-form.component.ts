@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PadletFactory} from "../shared/padlet-factory";
-import {Padlet} from "../shared/padlet";
+import {Padlet, User} from "../shared/padlet";
 import {Image} from "../shared/image";
 import {PadletBoardService} from "../shared/padlet-board.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PadletFormErrorMessages} from "./padlet-form-error-messages";
 import {ToastrService} from "ngx-toastr";
+import {UserService} from "../shared/user.service";
 
 @Component({
   selector: 'bs-padlet-form',
@@ -26,12 +27,19 @@ export class PadletFormComponent implements OnInit{
   isUpdatingPadlet= false;
   images : FormArray;
 
-  constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {
+  constructor(private fb: FormBuilder,
+              private pb: PadletBoardService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private toastr : ToastrService,
+              private userservice : UserService) {
     this.padletForm = this.fb.group({});
     this.images = this.fb.array([]);
   }
 
   ngOnInit(): void {
+    // console.log(this.userservice.getCurrentUser());
+
     const id = this.route.snapshot.params["id"];
     if(id) {
       this.isUpdatingPadlet = true;
@@ -48,23 +56,36 @@ export class PadletFormComponent implements OnInit{
   initPadlet(){
     this.buildThumbnailsArray();
 
-    this.padletForm = this.fb.group({
-      id : this.padlet.id,
-      title: [this.padlet.title, Validators.required],
-      description: [this.padlet.description],
-      images: this.images,
-      is_private : this.padlet.is_private
-    });
+    console.log(this.userservice.getCurrentUser());
+
+
+    if(this.isUpdatingPadlet){
+      this.padletForm = this.fb.group({
+        id : this.padlet.id,
+        title: [this.padlet.title, Validators.required],
+        description: [this.padlet.description],
+        images: this.images,
+        is_private : this.padlet.is_private
+      });
+    } else {
+      this.padletForm = this.fb.group({
+        id: this.padlet.id,
+        title: [this.padlet.title, Validators.required],
+        description: [this.padlet.description],
+        images: this.images,
+        is_private: this.padlet.is_private,
+        users: [[]]
+      });
+    }
+    console.log(this.padletForm);
     this.padletForm.statusChanges.subscribe(() => this.updateErrorMessages());
   }
 
 
   buildThumbnailsArray(){
-
     if(this.isUpdatingPadlet){
       this.padlet.images?.push(new Image(0, '', ''));
     }
-
     if (this.padlet.images){
       this.images = this.fb.array([]);
       for (let img of this.padlet.images){
@@ -76,9 +97,6 @@ export class PadletFormComponent implements OnInit{
         this.images.push(fg);
       }
     }
-    // else{
-    //   console.log("keine bilder");
-    // }
   }
 
   addThumbnailControl(){
@@ -102,12 +120,57 @@ export class PadletFormComponent implements OnInit{
     }
   }
 
+  // setCurrentUserToPadlet(){
+  //   console.log(this.userservice.getCurrentUser());
+  //   if(this.userservice.getCurrentUser()) {
+  //     const currentUser = this.userservice.getCurrentUser();
+  //     if (this.padlet.users && currentUser) {
+  //       this.padlet.users.push(new User(currentUser.id, currentUser?.first_name, currentUser?.last_name));
+  //       console.log(this.padlet);
+  //     }
+  //   }
+  //   //
+  //   // if(this.userservice.getCurrentUser()) {
+  //   //   const owner = [this.userservice.getCurrentUserId()];
+  //   //   if (this.padlet.users) {
+  //   //     this.padlet.users.push(owner);
+  //   //   }
+  //   // }
+  // }
+
   submitForm(){
     this.padletForm.value.images = this.padletForm.value.images.filter(
       (thumbnail: {url :string}) => thumbnail.url
     );
 
+    if(!this.isUpdatingPadlet){
+      let owner;
+      const currentUser = this.userservice.getCurrentUser();
+      if(this.userservice.getCurrentUser()) {
+        if (currentUser) {
+          owner = new User(currentUser.id, currentUser?.first_name, currentUser?.last_name);
+        }
+      }
+      this.padletForm.value.users.push(owner);
+    }
+
+
     const padlet : Padlet = PadletFactory.fromObject(this.padletForm.value);
+    // console.log(this.userservice.getCurrentUser());
+    //
+    // if(this.userservice.getCurrentUser()) {
+    //   const currentUser = this.userservice.getCurrentUser();
+    //   console.log(padlet);
+    //   if (padlet.users && currentUser) {
+    //     padlet.users.push(new User(currentUser.id, currentUser?.first_name, currentUser?.last_name));
+    //     console.log(padlet);
+    //   }
+    //   if(padlet.users == null){
+    //
+    //   }
+    // }
+    //     console.log(padlet);
+
 
     if(this.isUpdatingPadlet) {
       this.pb.update(padlet).subscribe(res => {
@@ -120,6 +183,11 @@ export class PadletFormComponent implements OnInit{
     else{
       // padlet.user_id = 1;
       // console.log(book);
+      // this.setCurrentUserToPadlet();
+
+      console.log(this.padletForm);
+      console.log(padlet);
+
       this.pb.create(padlet).subscribe(res =>{
         this.padlet = PadletFactory.empty();
         this.padletForm.reset(PadletFactory.empty());
