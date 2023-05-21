@@ -124,7 +124,7 @@ export class PadletDetailsComponent {
 
 
   canEdit(){
-    this.userservice.getAllUsers().subscribe(res => this.users = res);
+    // this.userservice.getAllUsers().subscribe(res => this.users = res);
 
 
   }

@@ -13,7 +13,7 @@
 <!--  <h3 class="ui dividing header" *ngIf="!renderComments">Keine Kommentare vorhanden</h3>-->
   <div class="comment" *ngFor="let comment of padlet?.comments">
     <div class="content">
-      <span class="author" *ngFor="let user of users">
+      <span class="author" *ngFor="let user of userservice.users">
         <span *ngIf="comment.user_id == user.id">{{user.first_name}} {{user.last_name}}</span>
       </span>
       <div class="metadata">

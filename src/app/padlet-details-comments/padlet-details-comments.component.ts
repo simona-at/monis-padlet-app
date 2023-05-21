@@ -8,6 +8,7 @@ import {ToastrService} from "ngx-toastr";
 import {PadletFactory} from "../shared/padlet-factory";
 import {UserService} from "../shared/user.service";
 import {AuthenticationService} from "../shared/authentication.service";
+import {toNumbers} from "@angular/compiler-cli/src/version_helpers";
 
 @Component({
   selector: 'bs-padlet-details-comments',
@@ -28,14 +29,14 @@ export class PadletDetailsCommentsComponent implements OnInit{
               private route: ActivatedRoute,
               private router: Router,
               private toastr : ToastrService,
-              private userservice : UserService,
+              public userservice : UserService,
               private authservice : AuthenticationService) {
     this.commentForm = this.fb.group({});
   }
 
   ngOnInit(): void {
 
-    this.getUsersNames();
+    this.userservice.getAllUsers();
 
     if(this.padlet) {
       this.commentForm = this.fb.group({
@@ -49,34 +50,10 @@ export class PadletDetailsCommentsComponent implements OnInit{
     // else this.renderComments = false;
   }
 
-  getCurrentUserId(){
-    console.log(this.authservice.getCurrentUser());
-    return 4;
-  }
-
-
-  getUsersNames(){
-    this.userservice.getAllUsers().subscribe(res => this.users = res);
-
-    // if(this.padlet?.comments){
-    //   console.log(this.padlet)
-    //   for(let comment of this.padlet.comments){
-    //     this.comments.push(comment);
-    //     console.log(comment);
-    //     this.renderComments = true;
-    //
-    //   }
-    // } else{
-    //   this.renderComments = false;
-    // }
-
-  }
-
-
 
   submitComment(){
     if(this.padlet) {
-      const comment: Comment = new Comment(0, this.commentForm.value['comment'], this.getCurrentUserId(), new Date());
+      const comment: Comment = new Comment(0, this.commentForm.value['comment'], this.userservice.getCurrentUserId(), new Date());
       this.padlet.comments?.push(comment);
       this.pb.comment(this.padlet).subscribe(res => {
         this.commentForm.reset();
