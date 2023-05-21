@@ -1,6 +1,5 @@
 
 <form  class="ui large form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
-  <!--        <input type="hidden" formControlName="id">-->
   <div class="field">
     <label>Neuer Kommentar</label>
     <textarea formControlName="comment" rows="3" placeholder="Kommentar hier schreiben…"></textarea>
@@ -8,3 +7,21 @@
   <button type="submit" class="ui button" [disabled]="commentForm.invalid">Senden</button>
 </form>
 
+
+<div class="ui comments">
+  <h3 class="ui dividing header" >Alle Kommentare</h3>
+<!--  <h3 class="ui dividing header" *ngIf="!renderComments">Keine Kommentare vorhanden</h3>-->
+  <div class="comment" *ngFor="let comment of padlet?.comments">
+    <div class="content">
+      <span class="author" *ngFor="let user of users">
+        <span *ngIf="comment.user_id == user.id">{{user.first_name}} {{user.last_name}}</span>
+      </span>
+      <div class="metadata">
+        <span class="date">&nbsp;am {{comment.created_at | date:"dd.MM.yyyy"}}</span>
+      </div>
+      <div class="text">
+        {{comment.content}}
+      </div>
+    </div>
+  </div>
+</div>

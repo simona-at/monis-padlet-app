@@ -16,16 +16,10 @@ import {PadletFormErrorMessages} from "../padlet-form/padlet-form-error-messages
   ]
 })
 export class PadletDetailsComponent {
-
-  // commentForm : FormGroup;
   padlet: Padlet = PadletFactory.empty();
-  // errors : { [key : string]: string } = {};
   likeBtn = "not_liked";
 
-
-
   constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {
-    // this.commentForm = this.fb.group({});
   }
 
   ngOnInit(){
@@ -42,11 +36,6 @@ export class PadletDetailsComponent {
         }
       }
     }
-
-    // this.commentForm = this.fb.group({
-    //   comment: [this.padlet.comments, Validators.required]
-    // });
-
   }
 
   removePadlet(){
@@ -113,20 +102,6 @@ export class PadletDetailsComponent {
     this.likeBtn = "not_liked";
 
     console.log(this.padlet.likes);
-
   }
-
-
-  // submitComment(){
-  //   const comment : Comment = new Comment(0, this.commentForm.value['comment'], this.getCurrentUserId());
-  //   this.padlet.comments?.push(comment);
-  //   this.pb.comment(this.padlet).subscribe(res => {
-  //     this.commentForm.reset();
-  //     this.router.navigate(["../../board", this.padlet.id], {
-  //       relativeTo: this.route
-  //     });
-  //   });
-  //   this.toastr.success('Kommentar wurde veröffentlicht!');
-  // }
 
 }
