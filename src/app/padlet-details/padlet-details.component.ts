@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Padlet} from '../shared/padlet';
+import {Padlet, User} from '../shared/padlet';
 import {Like} from '../shared/like';
 import {Comment} from '../shared/comment';
 import {PadletBoardService} from "../shared/padlet-board.service";
@@ -8,6 +8,8 @@ import {PadletFactory} from "../shared/padlet-factory";
 import {ToastrService} from "ngx-toastr";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PadletFormErrorMessages} from "../padlet-form/padlet-form-error-messages";
+import {AuthenticationService} from "../shared/authentication.service";
+import {UserService} from "../shared/user.service";
 
 @Component({
   selector: 'bs-padlet-details',
@@ -17,10 +19,17 @@ import {PadletFormErrorMessages} from "../padlet-form/padlet-form-error-messages
 })
 export class PadletDetailsComponent {
   padlet: Padlet = PadletFactory.empty();
+  users : User[]= [];
   likeBtn = "not_liked";
 
-  constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {
-  }
+  constructor(private fb: FormBuilder,
+              private pb: PadletBoardService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private toastr : ToastrService,
+              public authservice : AuthenticationService,
+              private userservice: UserService
+  ) {}
 
   ngOnInit(){
     const params = this.route.snapshot.params;
@@ -102,6 +111,22 @@ export class PadletDetailsComponent {
     this.likeBtn = "not_liked";
 
     console.log(this.padlet.likes);
+  }
+
+  hasImages(){
+    if(this.padlet.images) {
+      if (this.padlet?.images.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  canEdit(){
+    this.userservice.getAllUsers().subscribe(res => this.users = res);
+
+
   }
 
 }

@@ -10,6 +10,7 @@ export class AppComponent {
 
   // listOn = true;
   // detailsOn = false;
+  title = 'padlet';
 
   padlet : Padlet | undefined;
 

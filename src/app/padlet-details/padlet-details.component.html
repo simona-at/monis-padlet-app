@@ -50,10 +50,10 @@
     </div>
 
     <div class="two wide column">
-      <button class="ui tiny green labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
+      <button *ngIf="authservice.isLoggedIn()" class="ui tiny green labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
         <i class="write icon"></i> Padlet bearbeiten
       </button>
-      <button class="ui tiny red labeled icon button fluid" (click)="removePadlet()">
+      <button *ngIf="authservice.isLoggedIn()" class="ui tiny red labeled icon button fluid" (click)="removePadlet()">
         <i class="remove icon"></i> Padlet löschen
       </button>
       <button class="ui primary basic button fluid {{this.likeBtn}}" (click)="like()">LIKE</button>

@@ -4,6 +4,7 @@ import {PadletDetailsComponent} from "./padlet-details/padlet-details.component"
 import {NgModule} from "@angular/core";
 import {PadletFormComponent} from "./padlet-form/padlet-form.component";
 import {LoginComponent} from "./login/login.component";
+import {CanNavigateToEditGuard} from "./can-navigate-to-edit.guard";
 
 
 
@@ -12,7 +13,7 @@ const routes : Routes = [
   { path: 'board', component: PadletListComponent },
   { path: 'board/:id', component: PadletDetailsComponent },
   { path: 'create', component: PadletFormComponent },
-  { path: 'edit/:id', component: PadletFormComponent },
+  { path: 'edit/:id', component: PadletFormComponent, canActivate:[CanNavigateToEditGuard] },
   { path: 'login', component: LoginComponent }
 ];
 
@@ -20,7 +21,7 @@ const routes : Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: []
+  providers: [CanNavigateToEditGuard]
 })
 
 export class AppRoutingModule {}

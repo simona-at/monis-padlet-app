@@ -6,6 +6,8 @@ import {PadletBoardService} from "../shared/padlet-board.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {PadletFactory} from "../shared/padlet-factory";
+import {UserService} from "../shared/user.service";
+import {AuthenticationService} from "../shared/authentication.service";
 
 @Component({
   selector: 'bs-padlet-details-comments',
@@ -21,7 +23,13 @@ export class PadletDetailsCommentsComponent implements OnInit{
   users : User[]= [];
   renderComments = true;
 
-  constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {
+  constructor(private fb: FormBuilder,
+              private pb: PadletBoardService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private toastr : ToastrService,
+              private userservice : UserService,
+              private authservice : AuthenticationService) {
     this.commentForm = this.fb.group({});
   }
 
@@ -42,12 +50,13 @@ export class PadletDetailsCommentsComponent implements OnInit{
   }
 
   getCurrentUserId(){
+    console.log(this.authservice.getCurrentUser());
     return 4;
   }
 
 
   getUsersNames(){
-    this.pb.getAllUsers().subscribe(res => this.users = res);
+    this.userservice.getAllUsers().subscribe(res => this.users = res);
 
     // if(this.padlet?.comments){
     //   console.log(this.padlet)

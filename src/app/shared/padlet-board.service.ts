@@ -47,11 +47,6 @@ export class PadletBoardService {
   }
 
 
-  getAllUsers() : Observable<Array<User>>{
-    return this.http.get<Array<User>>(`${this.api}/users`).pipe(retry(3)).pipe(catchError(this.errorHandler));
-  }
-
-
   private errorHandler(error: Error | any) : Observable<any>{
     return throwError(error);
   }
