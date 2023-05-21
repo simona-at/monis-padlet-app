@@ -1,0 +1,64 @@
+
+<div class="ui grid">
+  <div class="row">
+    <a class="ui labeled icon" [routerLink]="backlink">
+      <i class="left chevron icon"></i>
+      Zurück zum Padlet
+    </a>
+  </div>
+  <div class="row">
+    <div class="sixteen wide column">
+
+      <h1>Nutzer bearbeiten</h1>
+
+      <form  class="ui large form" [formGroup]="padletUserForm" (ngSubmit)="saveUsers()">
+<!--        <input type="hidden" formControlName="id">-->
+
+        <div class="field">
+          <label>Eigentümer:in</label>
+          <div>
+            <div class="fields">
+              <div class="nine wide field">
+                <input value="{{ownerName}}" disabled>
+              </div>
+              <div class="six wide field">
+                <input value="{{ownerEmail}}" disabled>
+              </div>
+              <div class="one wide field form-lock-icon">
+                <i class="lock icon"></i>
+<!--                <button class="ui large button" type="button" disabled></button>-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="field">
+          <label>Zusätzliche Nutzer:innen</label>
+          <div formArrayName="users">
+            <div class="fields" *ngFor="let control of users?.controls; index as i; last as l" [formGroupName]="i">
+              <input type="hidden" formControlName="id">
+              <div class="nine wide field">
+                <input formControlName="email" placeholder="E-Mail-Adresse des gewünschten Nutzers">
+              </div>
+              <div class="six wide field">
+                <select formControlName="user_role" [(ngModel)]='roleDefault' >
+                  <option value="viewer">Betrachter:in</option>
+                  <option value="editor">Redakteur:in</option>
+                </select>
+              </div>
+              <div class="one wide field" *ngIf="l">
+                <button (click)="addUserControl()" class="ui large button" type="button">+</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="errors['users']" class="ui negative message">{{ errors['users'] }}</div>
+        </div>
+
+
+        <button type="submit" class="ui button" [disabled]="padletUserForm.invalid">Speichern</button>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import {AuthenticationService} from "./shared/authentication.service";
 import {TokenInterceptorService} from "./shared/token-interceptor.service";
 import {JwtInterceptorService} from "./shared/jwt-interceptor.service";
+import { PadletUsersFormComponent } from './padlet-users-form/padlet-users-form.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {JwtInterceptorService} from "./shared/jwt-interceptor.service";
     PadletDetailsComponent,
     PadletFormComponent,
     PadletDetailsCommentsComponent,
-    LoginComponent
+    LoginComponent,
+    PadletUsersFormComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, ToastrModule.forRoot(), ReactiveFormsModule

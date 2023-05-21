@@ -1,4 +1,4 @@
 <div class="ui four column grid">
-    <a *ngFor="let padlet of padlets" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
+    <a *ngFor="let padlet of padlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
 </div>
 

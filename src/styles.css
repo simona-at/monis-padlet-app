@@ -4,7 +4,7 @@
 
 
 .custom-flex-card{
-  /*display: flex !important;*/
+  display: flex !important;
 }
 
 
@@ -25,4 +25,11 @@
 .button.not_liked{
   background-color: #fff !important;
   color: #2185d0 !important;
+}
+
+
+.form-lock-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

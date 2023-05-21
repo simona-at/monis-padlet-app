@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PadletFormErrorMessages} from "./padlet-form-error-messages";
 import {ToastrService} from "ngx-toastr";
 import {UserService} from "../shared/user.service";
+import {AuthenticationService} from "../shared/authentication.service";
 
 @Component({
   selector: 'bs-padlet-form',
@@ -27,12 +28,16 @@ export class PadletFormComponent implements OnInit{
   isUpdatingPadlet= false;
   images : FormArray;
 
+  currentId = this.route.snapshot.params["id"];
+  backlink = "/board/"+this.currentId;
+
   constructor(private fb: FormBuilder,
               private pb: PadletBoardService,
               private route: ActivatedRoute,
               private router: Router,
               private toastr : ToastrService,
-              private userservice : UserService) {
+              private userservice : UserService,
+              public authservice : AuthenticationService) {
     this.padletForm = this.fb.group({});
     this.images = this.fb.array([]);
   }
@@ -56,8 +61,9 @@ export class PadletFormComponent implements OnInit{
   initPadlet(){
     this.buildThumbnailsArray();
 
-    console.log(this.userservice.getCurrentUser());
+    console.log(this.padlet.users);
 
+    let users = this.padlet.users;
 
     if(this.isUpdatingPadlet || !this.userservice.getCurrentUser()){
       this.padletForm = this.fb.group({
@@ -66,7 +72,7 @@ export class PadletFormComponent implements OnInit{
         description: [this.padlet.description],
         images: this.images,
         is_private : this.padlet.is_private,
-        users : []
+        users : [users]
       });
     } else {
       this.padletForm = this.fb.group({
@@ -78,7 +84,7 @@ export class PadletFormComponent implements OnInit{
         users: [[]]
       });
     }
-    console.log(this.padletForm);
+    // console.log(this.padletForm);
     this.padletForm.statusChanges.subscribe(() => this.updateErrorMessages());
   }
 

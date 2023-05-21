@@ -20,11 +20,10 @@ export class LoginComponent implements OnInit {
   users : User[]= [];
   current_user_name = "";
 
-  constructor(
-    private fb : FormBuilder,
-    private router : Router,
-    private authService : AuthenticationService,
-    private userservice : UserService
+  constructor(private fb : FormBuilder,
+              private router : Router,
+              private authService : AuthenticationService,
+              private userservice : UserService
   ) {
     this.loginForm = this.fb.group({});
   }
