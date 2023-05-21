@@ -12,6 +12,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
 import { PadletFormComponent } from './padlet-form/padlet-form.component';
 import { ReactiveFormsModule} from "@angular/forms";
+import { PadletDetailsCommentsComponent } from './padlet-details-comments/padlet-details-comments.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ReactiveFormsModule} from "@angular/forms";
     PadletListComponent,
     PadletListItemComponent,
     PadletDetailsComponent,
-    PadletFormComponent
+    PadletFormComponent,
+    PadletDetailsCommentsComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, ToastrModule.forRoot(), ReactiveFormsModule

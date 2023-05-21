@@ -43,6 +43,8 @@
         </span>
         Kommentare
       </span>
+      <bs-padlet-details-comments [padlet]="padlet"></bs-padlet-details-comments>
+
     </div>
 
     <div class="two wide column">
@@ -52,7 +54,7 @@
       <button class="ui tiny red labeled icon button fluid" (click)="removePadlet()">
         <i class="remove icon"></i> Padlet löschen
       </button>
-      <button class="ui toggle button fluid" (click)="like()">LIKE</button>
+      <button class="ui primary basic button fluid {{this.likeBtn}}" (click)="like()">LIKE</button>
     </div>
 
   </div>

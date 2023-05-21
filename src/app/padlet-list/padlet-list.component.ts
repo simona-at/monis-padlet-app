@@ -19,14 +19,10 @@ export class PadletListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.padlets = this.pb.getAll();
     this.pb.getAll().subscribe(res => this.padlets = res);
     // this.toastr.success('Padlets wurden erfolgreich geladen');
   }
 
-  // showDetails(padlet: Padlet){
-  //   this.showDetailsEvent.emit(padlet);
-  // }
 
   numberToString(id: number){
     return String(id);

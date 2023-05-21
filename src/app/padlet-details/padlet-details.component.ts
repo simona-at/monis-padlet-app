@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Padlet} from '../shared/padlet';
 import {Like} from '../shared/like';
+import {Comment} from '../shared/comment';
 import {PadletBoardService} from "../shared/padlet-board.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PadletFactory} from "../shared/padlet-factory";
 import {ToastrService} from "ngx-toastr";
-import {FormControl} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {PadletFormErrorMessages} from "../padlet-form/padlet-form-error-messages";
 
 @Component({
   selector: 'bs-padlet-details',
@@ -15,29 +17,37 @@ import {FormControl} from "@angular/forms";
 })
 export class PadletDetailsComponent {
 
+  // commentForm : FormGroup;
   padlet: Padlet = PadletFactory.empty();
+  // errors : { [key : string]: string } = {};
+  likeBtn = "not_liked";
 
-  // @Input() padlet : Padlet | undefined
-  // @Output() showListEvent = new EventEmitter<any>();
 
 
-  constructor(private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {}
+  constructor(private fb: FormBuilder, private pb: PadletBoardService, private route: ActivatedRoute, private router: Router, private toastr : ToastrService) {
+    // this.commentForm = this.fb.group({});
+  }
 
   ngOnInit(){
     const params = this.route.snapshot.params;
-    // this.padlet = this.pb.getSingle(params['id']);
     this.pb.getSingle(params['id']).subscribe((p:Padlet) => this.padlet = p);
+
+    if(this.padlet.likes) {
+      if(this.padlet.likes.length > 0){
+        for (let like of this.padlet.likes) {
+          if (like['user_id'] == this.getCurrentUserId()) {
+            this.likeBtn = "liked";
+            break;
+          }
+        }
+      }
+    }
+
+    // this.commentForm = this.fb.group({
+    //   comment: [this.padlet.comments, Validators.required]
+    // });
+
   }
-
-  // showPadletList(){
-  //   this.showListEvent.emit();
-  // }
-
-
-  // getLikes(num:number){
-  //
-  // }
-
 
   removePadlet(){
     if( confirm("Soll dieses Padlet wirklich gelöscht werden?")){
@@ -48,120 +58,75 @@ export class PadletDetailsComponent {
 
 
   getCurrentUserId(){
-    return 2;
+    return 4;
   }
 
 
   like() {
     let likeable = true;
-
-    // console.log(this.padlet.likes)
     if(this.padlet.likes) {
       if(this.padlet.likes.length > 0){
-        // console.log("hier sind mehr als 0 Likes");
         for (let like of this.padlet.likes) {
-          // console.log(like);
           if (like['user_id'] == this.getCurrentUserId()) {
             likeable = false;
             break;
-            // console.log("ich hab bereits geliked?!");
-            // this.dislikePadlet();
           }
-          // else {
-          //   // console.log("ich hab noch nicht geliked :)");
-          //   // this.likePadlet();
-          // }
         }
       }
-      // else {
-      //   likeable = true;
-      // }
     }
 
     if(likeable){
       this.likePadlet();
-      // console.log("hier wird geliked");
     } else{
       this.dislikePadlet();
-      // console.log("hier wird gedisliked");
     }
-
   }
 
   likePadlet(){
+
+    console.log(this.padlet.likes);
+
     let user_id = this.getCurrentUserId();
-    let like = new Like(user_id);
+    const like = new Like(user_id);
     this.padlet.likes?.push(like);
+
+    console.log(this.padlet.likes);
 
     this.pb.like(this.padlet).subscribe(res => {
       this.router.navigate(["../../board", this.padlet.id], {
         relativeTo: this.route
       });
     });
+    console.log(this.padlet.likes);
+
+    this.likeBtn = "liked";
   }
 
   dislikePadlet(){
-    // let user_id = ;
-    // // let like = new Like(user_id);
-    //
-    // let dislikeArray: Like[] = [];
-    // console.log(dislikeArray);
-    //
-    // let dislike = new Like(user_id);
-    // dislikeArray.push(dislike);
-    //
-    // console.log(dislikeArray);
+    console.log(this.padlet.likes);
 
     this.pb.dislike(this.padlet, this.getCurrentUserId()).subscribe(res => {
       this.router.navigate(["../../board", this.padlet.id], {
         relativeTo: this.route
       });
     });
+    this.likeBtn = "not_liked";
+
+    console.log(this.padlet.likes);
+
   }
 
 
-  // like() {
-  //   console.log(this.padlet.likes);
-  //   if (this.padlet.likes) {
-  //     for (let like of this.padlet.likes) {
-  //       if (like['user_id'] != this.getCurrentUserId()) {
-  //         console.log("ich hab bereits geliked?!");
-  //         // this.dislikePadlet();
-  //       } else {
-  //         console.log("ich hab noch nicht geliked :)");
-  //         // this.likePadlet();
-  //       }
-  //     }
-  //   } else {
-  //     this.likePadlet();
-  //   }
-  // }
-  //
-  // likePadlet(){
-  //   let like = new Like(this.getCurrentUserId());
-  //   this.padlet.likes?.push(like);
-  //   this.pb.like(this.padlet).subscribe(res => {
+  // submitComment(){
+  //   const comment : Comment = new Comment(0, this.commentForm.value['comment'], this.getCurrentUserId());
+  //   this.padlet.comments?.push(comment);
+  //   this.pb.comment(this.padlet).subscribe(res => {
+  //     this.commentForm.reset();
   //     this.router.navigate(["../../board", this.padlet.id], {
   //       relativeTo: this.route
   //     });
   //   });
+  //   this.toastr.success('Kommentar wurde veröffentlicht!');
   // }
-
-
-    // get id from current user
-    // push user_id into likes-array from this.padlet
-    // give this.padlet to this.pb.likes()
-
-
-    // commentPadlet() {
-    //   this.pb.comment(this.padlet).subscribe(res => {
-    //     this.router.navigate(["../../board", this.padlet.id], {
-    //       relativeTo: this.route
-    //     });
-    //   });
-    // }
-
-
-
 
 }

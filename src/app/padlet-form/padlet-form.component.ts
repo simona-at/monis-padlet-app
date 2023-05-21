@@ -76,9 +76,9 @@ export class PadletFormComponent implements OnInit{
         this.images.push(fg);
       }
     }
-    else{
-      console.log("keine bilder");
-    }
+    // else{
+    //   console.log("keine bilder");
+    // }
   }
 
   addThumbnailControl(){

@@ -15,3 +15,14 @@
   -webkit-transform: translateY(-3px);
   transform: translateY(-3px);
 }
+
+
+.button.liked{
+  background-color: #2185d0 !important;
+  color: #fff !important;
+}
+
+.button.not_liked{
+  background-color: #fff !important;
+  color: #2185d0 !important;
+}

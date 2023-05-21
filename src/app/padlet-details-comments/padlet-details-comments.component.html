@@ -1,0 +1,10 @@
+
+<form  class="ui large form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
+  <!--        <input type="hidden" formControlName="id">-->
+  <div class="field">
+    <label>Neuer Kommentar</label>
+    <textarea formControlName="comment" rows="3" placeholder="Kommentar hier schreiben…"></textarea>
+  </div>
+  <button type="submit" class="ui button" [disabled]="commentForm.invalid">Senden</button>
+</form>
+
