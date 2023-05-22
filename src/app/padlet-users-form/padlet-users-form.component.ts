@@ -8,6 +8,7 @@ import {Image, Padlet, User} from "../shared/padlet";
 import {PadletFactory} from "../shared/padlet-factory";
 import {Pivot} from "../shared/pivot";
 import {PadletFormErrorMessages} from "../padlet-form/padlet-form-error-messages";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'bs-padlet-users-form',
@@ -40,6 +41,7 @@ export class PadletUsersFormComponent implements OnInit{
     private route: ActivatedRoute,
     private pb: PadletBoardService,
     private authService : AuthenticationService,
+    private toastr : ToastrService,
     public userservice : UserService
   ) {
     this.users = this.fb.array([]);
@@ -66,49 +68,25 @@ export class PadletUsersFormComponent implements OnInit{
     this.padletUserForm = this.fb.group({
       users : this.users
     });
+    this.padletUserForm.statusChanges.subscribe(() => this.updateErrorMessages());
   }
 
   buildUsersArray(){
-    // this.padlet.users?.push(new User(0, '', '', '', ''));
-
     if (this.padlet.users){
-      // this.users = this.fb.array([]);
-      // console.log(this.padlet.users);
-      // console.log(this.users);
       let index = 1;
-
-
-
       for (let user of this.padlet.users){
-
-        // let pivot = user.pivot;
-        // console.log(pivot);
-        //
-        // if(pivot){
-        //     console.log(pivot.user_role);
-        //     // console.log(userrole[0]);
-        //   }
-
-          // let pivot = new Pivot('editor');
-
-
         if(index != 1){
           let fg = this.fb.group({
-            id: new FormControl(user.id),
-            email: new FormControl(user.email),
-            user_role: new FormControl(user.pivot?.user_role)
+            email: new FormControl(user.email, [Validators.required]),
+            user_role: new FormControl(user.pivot?.user_role, [Validators.required])
           });
           this.users.push(fg);
         }
         index++;
-
       }
-
       if(this.padlet.users.length < 2){
         this.addUserControl();
       }
-      console.log(index);
-
     }
   }
 
@@ -116,26 +94,51 @@ export class PadletUsersFormComponent implements OnInit{
     this.users.push(this.fb.group({email: null, user_role:null}));
   }
 
-  // updateErrorMessages(){
-  //   this.errors = {};
-  //   for (const message of PadletFormErrorMessages) {
-  //     const control = this.padletUserForm.get(message.forControl);
-  //     if(
-  //       control &&
-  //       control.dirty && //ist es geändert worden?
-  //       control.invalid && //ist es nicht valide? (zb bei email)
-  //       control.errors && //hat es einen error
-  //       control.errors[message.forValidator] &&
-  //       !this.errors[message.forControl]
-  //     ){
-  //       this.errors[message.forControl] = message.text;
-  //     }
-  //   }
-  // }
+  updateErrorMessages(){
+    // console.log("Is form invalid? " + this.padletUserForm.invalid);
+    this.errors = {};
+    for (const message of PadletFormErrorMessages) {
+      const control = this.padletUserForm.get(message.forControl);
+      if(
+        control &&
+        control.dirty &&
+        control.invalid &&
+        control.errors &&
+        control.errors[message.forValidator] &&
+        !this.errors[message.forControl]
+      ){
+        this.errors[message.forControl] = message.text;
+      }
+    }
+  }
 
   saveUsers(){
 
+    let padlet : Padlet = PadletFactory.empty();
+
+    for(let newUser of this.padletUserForm.value.users){
+      const user_email = newUser.email;
+      const user_role = newUser.user_role;
+      const pivot = new Pivot(user_role);
+      const user : User = new User(0, "", "", user_email, user_role, pivot);
+      padlet.users?.push(user);
+    }
+
+    // padlet.title = "empty";
+    padlet.id = this.currentId;
+
+    console.log(padlet);
+
+    this.pb.update(padlet).subscribe(res => {
+      this.router.navigate(["../../board", this.currentId], {
+        relativeTo: this.route
+      });
+      this.toastr.success('Nutzer:innen wurden bearbeitet!');
+    });
+
+
   }
+
 
   getOwnerName(){
     if(this.padlet.users) {

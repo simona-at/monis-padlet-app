@@ -62,8 +62,9 @@ export class PadletDetailsCommentsComponent implements OnInit{
             relativeTo: this.route
           });
         }
+        this.toastr.success('Kommentar wurde veröffentlicht!');
       });
-      this.toastr.success('Kommentar wurde veröffentlicht!');
+
     }
   }
 }

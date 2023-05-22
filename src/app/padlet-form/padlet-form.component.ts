@@ -164,8 +164,9 @@ export class PadletFormComponent implements OnInit{
         this.router.navigate(["../board"], {
           relativeTo: this.route
         });
+        this.toastr.success('Padlet wurde erstellt!');
       });
-      this.toastr.success('Padlet wurde erstellt!');
+
     }
   }
 

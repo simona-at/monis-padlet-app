@@ -62,8 +62,8 @@ export class AuthenticationService {
     return !this.isLoggedIn();
   }
 
-  public getCurrentUser(){
-    return this.http.get(`${this.api}/me`, {});
-  }
+  // public getCurrentUser(){
+  //   return this.http.get(`${this.api}/me`, {});
+  // }
 
 }

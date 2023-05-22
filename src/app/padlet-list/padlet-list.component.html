@@ -1,4 +1,12 @@
+<h2 *ngIf="currentUser">Private Padlets</h2>
+<div *ngIf="currentUser" class="ui four column grid">
+  <a *ngFor="let padlet of privatePadlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
+</div>
+
+
+
+<h2>Öffentliche Padlets</h2>
 <div class="ui four column grid">
-    <a *ngFor="let padlet of padlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
+  <a *ngFor="let padlet of publicPadlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
 </div>
 

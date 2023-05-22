@@ -49,8 +49,11 @@ export class PadletDetailsComponent {
 
   removePadlet(){
     if( confirm("Soll dieses Padlet wirklich gelöscht werden?")){
-      this.pb.remove(this.padlet.id).subscribe((res:any) => this.router.navigate(['../'], {relativeTo: this.route}));
-      this.toastr.success('Padlet wurde erfolgreich gelöscht');
+      this.pb.remove(this.padlet.id).subscribe((res:any) => {
+        this.router.navigate(['../'], {relativeTo: this.route});
+        this.toastr.success('Padlet wurde erfolgreich gelöscht');
+      });
+
     }
   }
 
@@ -123,10 +126,10 @@ export class PadletDetailsComponent {
   }
 
 
-  canEdit(){
-    // this.userservice.getAllUsers().subscribe(res => this.users = res);
 
+  canEdit(){
 
   }
+
 
 }
