@@ -9,5 +9,6 @@ export class ErrorMessage {
 }
 
 export const PadletFormErrorMessages = [
-  new ErrorMessage('title', 'required', 'Das Padlet muss einen Titel haben')
+  new ErrorMessage('title', 'required', 'Das Padlet muss einen Titel haben'),
+  new ErrorMessage('users', 'required', 'Alle Felder müssen ausgefüllt sein')
 ];

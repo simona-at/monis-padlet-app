@@ -7,7 +7,7 @@ export class User {
     public last_name?: string,
     public email?: string,
     public user_role?: string,
-    public pivot?: Pivot[]
+    public pivot?: Pivot
     // public password: string
   ) {}
 }

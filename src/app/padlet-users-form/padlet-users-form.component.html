@@ -11,9 +11,7 @@
 
       <h1>Nutzer bearbeiten</h1>
 
-      <form  class="ui large form" [formGroup]="padletUserForm" (ngSubmit)="saveUsers()">
-<!--        <input type="hidden" formControlName="id">-->
-
+      <div class="ui large form">
         <div class="field">
           <label>Eigentümer:in</label>
           <div>
@@ -26,26 +24,32 @@
               </div>
               <div class="one wide field form-lock-icon">
                 <i class="lock icon"></i>
-<!--                <button class="ui large button" type="button" disabled></button>-->
+                <!--                <button class="ui large button" type="button" disabled></button>-->
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-
+      <form  class="ui large form" [formGroup]="padletUserForm" (ngSubmit)="saveUsers()">
+<!--        <input type="hidden" formControlName="id">-->
         <div class="field">
           <label>Zusätzliche Nutzer:innen</label>
           <div formArrayName="users">
             <div class="fields" *ngFor="let control of users?.controls; index as i; last as l" [formGroupName]="i">
-              <input type="hidden" formControlName="id">
+<!--              <input type="hidden" formControlName="id">-->
               <div class="nine wide field">
                 <input formControlName="email" placeholder="E-Mail-Adresse des gewünschten Nutzers">
+                <div *ngIf="errors['email']" class="ui negative message">{{ errors['email'] }}</div>
+
               </div>
               <div class="six wide field">
                 <select formControlName="user_role" [(ngModel)]='roleDefault' >
                   <option value="viewer">Betrachter:in</option>
                   <option value="editor">Redakteur:in</option>
                 </select>
+                <div *ngIf="errors['user_role']" class="ui negative message">{{ errors['user_role'] }}</div>
+
               </div>
               <div class="one wide field" *ngIf="l">
                 <button (click)="addUserControl()" class="ui large button" type="button">+</button>
