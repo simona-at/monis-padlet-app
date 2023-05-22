@@ -21,6 +21,18 @@ export class PadletDetailsComponent {
   padlet: Padlet = PadletFactory.empty();
   users : User[]= [];
   likeBtn = "not_liked";
+  editors : User[] = [];
+  isEditor = false;
+  isOwner = false;
+  owner: User | undefined;
+  likeable = true;
+
+
+
+  padletHasImages = true;
+
+  textColums = "eight wide column";
+
 
   constructor(private fb: FormBuilder,
               private pb: PadletBoardService,
@@ -32,8 +44,16 @@ export class PadletDetailsComponent {
   ) {}
 
   ngOnInit(){
+
     const params = this.route.snapshot.params;
-    this.pb.getSingle(params['id']).subscribe((p:Padlet) => this.padlet = p);
+    this.pb.getSingle(params['id']).subscribe((p:Padlet) => {
+      this.padlet = p;
+      this.hasImages();
+      this.initLikeBtn();
+      this.getEditors();
+      this.getOwner();
+      this.canUserEdit();
+    });
 
     if(this.padlet.likes) {
       if(this.padlet.likes.length > 0){
@@ -58,77 +78,103 @@ export class PadletDetailsComponent {
   }
 
 
-  getCurrentUserId(){
-    return 4;
+  getCurrentUserId() : number{
+    return this.userservice.getCurrentUserId();
   }
 
 
-  like() {
-    let likeable = true;
+  initLikeBtn(){
     if(this.padlet.likes) {
       if(this.padlet.likes.length > 0){
         for (let like of this.padlet.likes) {
           if (like['user_id'] == this.getCurrentUserId()) {
-            likeable = false;
+            this.likeable = false;
             break;
           }
         }
       }
     }
+    if(this.likeable){
+      this.likeBtn = "not_liked";
+    } else{
+      this.likeBtn = "liked";
+    }
+  }
 
-    if(likeable){
+  like() {
+    if(this.likeable){
       this.likePadlet();
+      // this.likeBtn = "not_liked";
     } else{
       this.dislikePadlet();
+      // this.likeBtn = "liked";
     }
   }
 
   likePadlet(){
-
-    console.log(this.padlet.likes);
-
     let user_id = this.getCurrentUserId();
     const like = new Like(user_id);
     this.padlet.likes?.push(like);
-
-    console.log(this.padlet.likes);
 
     this.pb.like(this.padlet).subscribe(res => {
       this.router.navigate(["../../board", this.padlet.id], {
         relativeTo: this.route
       });
+      this.likeBtn = "liked";
+      this.likeable = false;
+      this.ngOnInit();
     });
-    console.log(this.padlet.likes);
 
-    this.likeBtn = "liked";
   }
 
   dislikePadlet(){
-    console.log(this.padlet.likes);
-
     this.pb.dislike(this.padlet, this.getCurrentUserId()).subscribe(res => {
       this.router.navigate(["../../board", this.padlet.id], {
         relativeTo: this.route
       });
+      this.likeBtn = "not_liked";
+      this.likeable = true;
+      this.ngOnInit();
     });
-    this.likeBtn = "not_liked";
-
-    console.log(this.padlet.likes);
   }
 
   hasImages(){
     if(this.padlet.images) {
-      if (this.padlet?.images.length > 0) {
-        return true;
+      if (this.padlet?.images.length == 0) {
+        this.textColums = "thirteen wide column widthimportant";
+        this.padletHasImages = false;
+      }
+      else {
+        this.textColums = "eight wide column";
+        this.padletHasImages = true;
       }
     }
-    return false;
   }
 
+  getEditors(){
+    if(this.padlet.users){
+      for (let user of this.padlet.users){
+        if(user.pivot?.user_role == "owner" || user.pivot?.user_role == "editor"){
+          this.editors.push(user);
+        }
+      }
+    }
+  }
 
+  getOwner(){
+    if(this.padlet.users){
+      for (let user of this.padlet.users){
+        if(user.pivot?.user_role == "owner"){
+          this.owner = user;
+        }
+      }
+    }
+  }
 
-  canEdit(){
-
+  canUserEdit(){
+    const currentUserId = this.userservice.getCurrentUserId();
+    if(this.editors.find(item => item.id === currentUserId)) this.isEditor = true;
+    if(this.owner?.id === currentUserId) this.isOwner = true;
   }
 
 

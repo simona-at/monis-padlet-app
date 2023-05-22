@@ -8,13 +8,13 @@
   </div>
   <div class="row">
 
-    <div class="six wide column">
+    <div class="five wide column" *ngIf="padletHasImages">
       <div *ngFor="let image of padlet?.images" >
         <img [src]="image.url" [alt]="image.title" style="width: 100%;">
       </div>
     </div>
 
-    <div class="eight wide column">
+    <div class="{{textColums}}">
       <h1>{{padlet.title}}</h1>
       <p>
         <span *ngFor="let user of padlet?.users; let isFirst = first">
@@ -49,15 +49,15 @@
 
     </div>
 
-    <div class="two wide column">
-      <button *ngIf="authservice.isLoggedIn()" class="ui tiny green labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
+    <div class="three wide column">
+      <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny green labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
         <i class="write icon"></i> Padlet bearbeiten
       </button>
-      <button *ngIf="authservice.isLoggedIn()" class="ui tiny orange labeled icon button fluid" [routerLink]="['../../users/', padlet.id]">
+      <button *ngIf="authservice.isLoggedIn() && isOwner" class="ui tiny orange labeled icon button fluid" [routerLink]="['../../users/', padlet.id]">
         <i class="write icon"></i> Nutzer bearbeiten
       </button>
 
-      <button *ngIf="authservice.isLoggedIn()" class="ui tiny red labeled icon button fluid" (click)="removePadlet()">
+      <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny red labeled icon button fluid" (click)="removePadlet()">
         <i class="remove icon"></i> Padlet löschen
       </button>
 

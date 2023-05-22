@@ -33,3 +33,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.widthimportant{
+  width: 81.25%!important;
+}

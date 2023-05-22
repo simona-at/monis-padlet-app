@@ -60,11 +60,4 @@ export class PadletListComponent implements OnInit {
     return String(id);
   }
 
-
-  canView(){
-
-
-  }
-
-
 }
