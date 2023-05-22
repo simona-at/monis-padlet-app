@@ -19,7 +19,7 @@ import {ToastrService} from "ngx-toastr";
 export class PadletUsersFormComponent implements OnInit{
 
   //set default for user_role select field
-  roleDefault :string = "viewer";
+  // roleDefault :string = "viewer";
 
   currentId = this.route.snapshot.params["id"];
   backlink = "/board/"+this.currentId;
@@ -77,8 +77,10 @@ export class PadletUsersFormComponent implements OnInit{
       for (let user of this.padlet.users){
         if(index != 1){
           let fg = this.fb.group({
-            email: new FormControl(user.email, [Validators.required]),
-            user_role: new FormControl(user.pivot?.user_role, [Validators.required])
+            // email: new FormControl(user.email, [Validators.required]),
+            // user_role: new FormControl(user.pivot?.user_role, [Validators.required])
+            email: new FormControl(user.email),
+            user_role: new FormControl(user.pivot?.user_role)
           });
           this.users.push(fg);
         }
@@ -114,20 +116,35 @@ export class PadletUsersFormComponent implements OnInit{
 
   saveUsers(){
 
-    let padlet : Padlet = PadletFactory.empty();
+    // let allUsers = this.userservice.users;
+    // console.log(allUsers);
 
+    // let padlet : Padlet = PadletFactory.empty();
+
+    let users = [];
     for(let newUser of this.padletUserForm.value.users){
       const user_email = newUser.email;
       const user_role = newUser.user_role;
       const pivot = new Pivot(user_role);
       const user : User = new User(0, "", "", user_email, user_role, pivot);
-      padlet.users?.push(user);
+      users.push(user);
     }
 
-    // padlet.title = "empty";
-    padlet.id = this.currentId;
+    let padlet : Padlet = new Padlet(
+      this.currentId,
+      this.padlet.title,
+      this.padlet.is_private,
+      this.padlet.created_at,
+      this.padlet.description,
+      this.padlet.images,
+      users
+    );
 
-    console.log(padlet);
+
+    // padlet.title = "empty";
+    // padlet.id = this.currentId;
+
+    // console.log(padlet);
 
     this.pb.update(padlet).subscribe(res => {
       this.router.navigate(["../../board", this.currentId], {
