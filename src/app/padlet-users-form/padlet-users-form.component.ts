@@ -165,7 +165,7 @@ export class PadletUsersFormComponent implements OnInit{
       const user_email = newUser.email;
       const user_role = newUser.user_role;
       const pivot = new Pivot(user_role);
-      const user : User = new User(0, "", "", user_email, user_role, pivot);
+      const user : User = new User(0, "", "", user_email, pivot);
       users.push(user);
     }
 

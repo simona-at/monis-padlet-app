@@ -28,6 +28,8 @@ export class PadletFormComponent implements OnInit{
   isUpdatingPadlet= false;
   images : FormArray;
   loading: boolean = true;
+  currentUser : User | undefined;
+  users : User[] = [];
 
   currentId = this.route.snapshot.params["id"];
   backlink = "/board/"+this.currentId;
@@ -44,7 +46,10 @@ export class PadletFormComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // console.log(this.userservice.getCurrentUser());
+    this.userservice.fetchUsers().subscribe(res =>{
+      this.users = res;
+      this.currentUser = this.getCurrentUser();
+    });
 
     const id = this.route.snapshot.params["id"];
     if(id) {
@@ -61,10 +66,19 @@ export class PadletFormComponent implements OnInit{
     this.loading = false;
   }
 
+  getCurrentUser(){
+    for(let user of this.users){
+      if(user.id == this.userservice.getCurrentUserId()){
+        return user;
+      }
+    }
+    return undefined;
+  }
+
   initPadlet(){
     this.buildThumbnailsArray();
 
-    if(this.isUpdatingPadlet || !this.userservice.getCurrentUser()){
+    if(this.isUpdatingPadlet || !this.currentUser){
       this.padletForm = this.fb.group({
         id : this.padlet.id,
         title: [this.padlet.title, Validators.required],
@@ -83,7 +97,6 @@ export class PadletFormComponent implements OnInit{
         users: [[]]
       });
     }
-    // console.log(this.padletForm);
     this.padletForm.statusChanges.subscribe(() => this.updateErrorMessages());
   }
 
@@ -144,17 +157,12 @@ export class PadletFormComponent implements OnInit{
       (thumbnail: {url :string}) => thumbnail.url
     );
 
-    if(!this.isUpdatingPadlet  && this.userservice.getCurrentUser()){
-      let owner;
-      const currentUser = this.userservice.getCurrentUser();
-      if(this.userservice.getCurrentUser()) {
-        if (currentUser) {
-          owner = new User(currentUser.id, currentUser?.first_name, currentUser?.last_name);
-        }
-      }
+    if(!this.isUpdatingPadlet && this.currentUser){
+      let owner = new User(this.currentUser.id, this.currentUser?.first_name, this.currentUser?.last_name);
       this.padletForm.value.users.push(owner);
+    } else{
+      this.padletForm.value.users = undefined;
     }
-
     const padlet : Padlet = PadletFactory.fromObject(this.padletForm.value);
 
     if(this.isUpdatingPadlet) {
@@ -166,10 +174,6 @@ export class PadletFormComponent implements OnInit{
       this.toastr.success('Padlet wurde bearbeitet!');
     }
     else{
-
-      // console.log(this.padletForm);
-      // console.log(padlet);
-
       this.pb.create(padlet).subscribe(res =>{
         this.padlet = PadletFactory.empty();
         this.padletForm.reset(PadletFactory.empty());

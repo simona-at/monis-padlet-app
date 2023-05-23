@@ -20,6 +20,22 @@
     </div>
 
     <div class="{{textColums}}">
+
+      <div class="three wide column">
+        <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny gray labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
+          <i class="write icon"></i> Padlet bearbeiten
+        </button>
+        <button *ngIf="authservice.isLoggedIn() && isOwner" class="ui tiny gray labeled icon button fluid" [routerLink]="['../../users/', padlet.id]">
+          <i class="user icon"></i> Nutzer:innen bearbeiten
+        </button>
+
+        <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny gray labeled icon button fluid" (click)="removePadlet()">
+          <i class="trash icon"></i> Padlet löschen
+        </button>
+
+        <button *ngIf="authservice.isLoggedIn()" class="ui primary basic button fluid {{this.likeBtn}}" (click)="like()">LIKE</button>
+      </div>
+
       <h1>{{padlet.title}}</h1>
       <p>
         <span class="author">{{ownerName}}</span>
@@ -27,39 +43,30 @@
           <span class="date">&nbsp;am {{padlet.created_at | date:"dd.MM.yyyy"}}</span>
         </span>
       </p>
-      <p>{{padlet.description}}</p>
-      <hr>
-      <div class="extra content">
-      <span class="right floated">
-        <i class="heart outline like icon"></i>
-        {{likeCount}}
-        <span *ngIf="likeCount != 1">Likes</span>
-        <span *ngIf="likeCount == 1">Like</span>
-      </span>
-      <span>
-        <i class="comment outline icon"></i>
-        {{commentCount}}
-        <span *ngIf="commentCount != 1">Kommentare</span>
-        <span *ngIf="commentCount == 1">Kommentar</span>
-      </span>
+
+
+      <div class="extra content likesComments">
+        <span>
+          <i class="heart outline like icon"></i>
+          {{likeCount}}
+          <span *ngIf="likeCount != 1">Likes</span>
+          <span *ngIf="likeCount == 1">Like</span>
+        </span>
+        <span>
+          <i class="comment outline icon"></i>
+          {{commentCount}}
+          <span *ngIf="commentCount != 1">Kommentare</span>
+          <span *ngIf="commentCount == 1">Kommentar</span>
+        </span>
       </div>
+
+
+      <p>{{padlet.description}}</p>
+
       <bs-padlet-details-comments [padlet]="padlet"></bs-padlet-details-comments>
     </div>
 
-    <div class="three wide column">
-      <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny gray labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
-        <i class="write icon"></i> Padlet bearbeiten
-      </button>
-      <button *ngIf="authservice.isLoggedIn() && isOwner" class="ui tiny gray labeled icon button fluid" [routerLink]="['../../users/', padlet.id]">
-        <i class="user icon"></i> Nutzer:innen bearbeiten
-      </button>
 
-      <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny gray labeled icon button fluid" (click)="removePadlet()">
-        <i class="trash icon"></i> Padlet löschen
-      </button>
-
-      <button *ngIf="authservice.isLoggedIn()" class="ui primary basic button fluid {{this.likeBtn}}" (click)="like()">LIKE</button>
-    </div>
 
   </div>
 </div>

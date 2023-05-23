@@ -31,7 +31,7 @@ export class PadletDetailsComponent {
   isOwner : boolean = false;
   loading : boolean = true;
 
-  textColums : string = "eight wide column";
+  textColums : string = "eleven wide column";
   likeBtn : string = "not_liked";
   ownerName : string = "Anonyme:r Nutzer:in";
 
@@ -153,7 +153,7 @@ export class PadletDetailsComponent {
         this.padletHasImages = false;
       }
       else {
-        this.textColums = "eight wide column";
+        this.textColums = "eleven wide column";
         this.padletHasImages = true;
       }
     }
