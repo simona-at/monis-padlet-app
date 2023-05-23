@@ -4,7 +4,7 @@
 
 <div class="list-view-container">
 
-  <h1 class="hallo-user" *ngIf="current_user_name != ''">Hallo {{current_user_name}}!</h1>
+  <h1 class="hallo-user" *ngIf="current_user_name != ''">Hallo, {{current_user_name}}!</h1>
 
   <h2 *ngIf="currentUser" class="padlets-list-headline">Private Padlets</h2>
   <p class="info-message" *ngIf="privatePadletsCount == 0 && currentUser">Es sind noch keine privaten Padlets vorhanden. <a class="bold" *ngIf="currentUser" routerLink="../create">Erstelle jetzt ein neues Padlet!</a></p>

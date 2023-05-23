@@ -160,7 +160,7 @@ export class PadletFormComponent implements OnInit{
     if(!this.isUpdatingPadlet && this.currentUser){
       let owner = new User(this.currentUser.id, this.currentUser?.first_name, this.currentUser?.last_name);
       this.padletForm.value.users.push(owner);
-    } else{
+    } else if(!this.currentUser) {
       this.padletForm.value.users = undefined;
     }
     const padlet : Padlet = PadletFactory.fromObject(this.padletForm.value);

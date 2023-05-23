@@ -51,6 +51,9 @@ export class PadletDetailsCommentsComponent implements OnInit{
       this.pb.comment(this.padlet).subscribe(res => {
         this.commentForm.reset();
         if(this.padlet) {
+          if(this.padlet.comments) {
+            this.commentCount = this.padlet.comments.length;
+          }
           this.router.navigate(["../../board", this.padlet.id], {
             relativeTo: this.route
           });

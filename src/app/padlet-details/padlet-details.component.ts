@@ -24,10 +24,12 @@ export class PadletDetailsComponent {
   users : User[]= [];
   editors : User[] = [];
   owner : User | undefined;
+  viewers : User[] = [];
 
   padletHasImages : boolean = true;
   likeable : boolean = true;
   isEditor : boolean = false;
+  isViewer : boolean = false;
   isOwner : boolean = false;
   loading : boolean = true;
 
@@ -63,6 +65,7 @@ export class PadletDetailsComponent {
     this.hasImages();
     this.initLikeBtn();
     this.getEditors();
+    this.getViewers();
     if(this.getOwner()){
       this.ownerName = this.owner?.first_name + " " + this.owner?.last_name;
     }
@@ -160,8 +163,18 @@ export class PadletDetailsComponent {
   getEditors(){
     if(this.padlet.users){
       for (let user of this.padlet.users){
-        if(user.pivot?.user_role == "owner" || user.pivot?.user_role == "editor"){
+        if(user.pivot?.user_role == "editor"){
           this.editors.push(user);
+        }
+      }
+    }
+  }
+
+  getViewers(){
+    if(this.padlet.users){
+      for (let user of this.padlet.users){
+        if(user.pivot?.user_role == "viewer"){
+          this.viewers.push(user);
         }
       }
     }
@@ -183,6 +196,7 @@ export class PadletDetailsComponent {
   canUserEdit(){
     const currentUserId = this.userservice.getCurrentUserId();
     if(this.editors.find(item => item.id === currentUserId)) this.isEditor = true;
+    if(this.viewers.find(item => item.id === currentUserId)) this.isViewer = true;
     if(this.owner?.id === currentUserId) this.isOwner = true;
   }
 

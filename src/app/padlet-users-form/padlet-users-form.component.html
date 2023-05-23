@@ -3,30 +3,30 @@
 </div>
 
 <div class="ui grid">
-  <div class="row">
-    <a class="ui labeled icon" [routerLink]="backlink">
+  <div class="row header-bar">
+    <a class="ui labeled icon backlink" [routerLink]="backlink">
       <i class="left chevron icon"></i>
       Zurück zum Padlet
     </a>
   </div>
-  <div class="row">
-    <div class="sixteen wide column">
+  <div class="row centered-row">
+    <div class="ten wide column">
 
       <h1>Nutzer:innen bearbeiten</h1>
 
       <div class="ui large form">
         <div class="field">
-          <label>Eigentümer:in</label>
+          <label class="owner-label">Eigentümer:in</label>
           <div>
             <div class="fields">
-              <div class="nine wide field">
+              <div class="eight wide field">
                 <input value="{{ownerName}}" disabled>
               </div>
               <div class="six wide field">
                 <input value="{{ownerEmail}}" disabled>
               </div>
-              <div class="one wide field form-lock-icon">
-                <i class="lock icon"></i>
+              <div class="two wide field form-lock-icon">
+                <i class="lock icon" style="margin:0;"></i>
                 <!--                <button class="ui large button" type="button" disabled></button>-->
               </div>
             </div>
@@ -41,7 +41,7 @@
           <div formArrayName="users">
             <div class="fields" *ngFor="let control of users?.controls; index as i; last as l" [formGroupName]="i">
 <!--              <input type="hidden" formControlName="id">-->
-              <div class="nine wide field">
+              <div class="eight wide field">
                 <input formControlName="email" placeholder="E-Mail-Adresse des gewünschten Nutzers">
                 <div *ngIf="errors['email']" class="ui negative message">{{ errors['email'] }}</div>
               </div>
@@ -53,8 +53,8 @@
                 <div *ngIf="errors['user_role']" class="ui negative message">{{ errors['user_role'] }}</div>
 
               </div>
-              <div class="one wide field" *ngIf="l">
-                <button (click)="addUserControl()" class="ui large button" type="button">+</button>
+              <div class="two wide field" *ngIf="l">
+                <button (click)="addUserControl()" class="ui large fluid button" type="button">+</button>
               </div>
             </div>
           </div>
@@ -62,7 +62,7 @@
         </div>
 
 
-        <button type="submit" class="ui button" [disabled]="padletUserForm.invalid">Speichern</button>
+        <button type="submit" class="ui button submit-btn" [disabled]="padletUserForm.invalid">Speichern</button>
       </form>
 
     </div>

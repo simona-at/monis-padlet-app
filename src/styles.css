@@ -20,7 +20,7 @@
 
 .bold{
   /*font-weight: bold;*/
-  color: #4183c4;
+  color: #0da29d;
 }
 
 
@@ -37,6 +37,42 @@
   transition: 200ms ease-in-out all !important;
 }
 
+.ui.secondary.menu .item:hover{
+  background: rgba(13, 162, 157, 0.35) !important;
+}
+
+.header-bar{
+  margin: 10px 14px 30px !important;
+}
+
+.header-bar .backlink{
+  color: #0da29d;
+}
+
+form{
+  margin: 40px 0;
+}
+
+form label, .owner-label{
+  color: #0da29d !important;
+  margin: 30px 0 10px !important;
+}
+
+form .button, .logout-btn{
+  transition: 200ms ease-in-out all !important;
+}
+
+form .submit-btn{
+  margin: 30px 0 80px !important;
+}
+
+form .button:hover, .logout-btn:hover{
+  background: rgba(13, 162, 157, 0.35) !important;
+}
+
+.centered-row{
+  justify-content: center !important;
+}
 
 /********************************************************************************************/
 /**** PADLET LIST VIEW
@@ -47,7 +83,7 @@
 }
 
 .hallo-user{
- color: #4183c4;
+ color: #0da29d;
 }
 
 .padlets-list-headline{
@@ -78,6 +114,10 @@
   transform: translateY(-3px);
 }
 
+.padlet-list-item-owner-name{
+  color: #0da29d;
+}
+
 
 /********************************************************************************************/
 /**** PADLET DETAIL VIEW
@@ -91,11 +131,37 @@
 
 .padlet-detail-button-row{
   margin-bottom: 30px;
+  align-items: center;
+}
+
+.padlet-detail-button-row .small-info-text{
+  color: rgba(0,0,0,.4);
+  font-size: 12px;
+  margin-right: 15px;
+}
+
+.padlet-edit-buttons{
+  transition: 200ms ease-in-out all !important;
+}
+
+.padlet-edit-buttons:hover{
+  background: rgba(13, 162, 157, 0.35) !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .padlet-detail-visibility{
   margin-bottom: 30px;
   color: rgba(0,0,0,.4);
+}
+
+padlet-detail-title{
+  max-width: 70%;
+}
+
+.padlet-detail-data{
+  border-top: 1px solid rgba(34,36,38,.15);
+  padding-top: 30px !important;
 }
 
 .padlet-detail-data .date{
@@ -129,7 +195,7 @@
   border-top: 1px solid rgba(34,36,38,.15);
   /*border-bottom: 1px solid rgba(34,36,38,.15);*/
   padding: 12px 0;
-  margin: 20px 0 30px;
+  margin: 40px 0;
   display: flex;
   justify-content: flex-end;
 }
@@ -194,4 +260,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: rgba(0,0,0,.4);
 }

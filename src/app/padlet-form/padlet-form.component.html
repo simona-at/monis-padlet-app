@@ -3,18 +3,18 @@
 </div>
 
 <div class="ui grid">
-  <div class="row">
-    <a *ngIf="isUpdatingPadlet" class="ui labeled icon" [routerLink]="backlink">
+  <div class="row header-bar">
+    <a *ngIf="isUpdatingPadlet" class="ui labeled icon backlink" [routerLink]="backlink">
       <i class="left chevron icon"></i>
       Zurück zum Padlet
     </a>
-    <a *ngIf="!isUpdatingPadlet" class="ui labeled icon" [routerLink]="'/board'">
+    <a *ngIf="!isUpdatingPadlet" class="ui labeled icon backlink" [routerLink]="'/board'">
       <i class="left chevron icon"></i>
       Zurück zur Übersicht
     </a>
   </div>
-  <div class="row">
-    <div class="sixteen wide column">
+  <div class="row centered-row">
+    <div class="ten wide column">
 
 
       <h1 *ngIf="isUpdatingPadlet">Padlet bearbeiten</h1>
@@ -29,21 +29,21 @@
         </div>
         <div class="field">
           <label>Beschreibung</label>
-          <textarea formControlName="description" rows="5" placeholder="Beschreibung des Padlets"></textarea>
+          <textarea formControlName="description" rows="10" placeholder="Beschreibung des Padlets"></textarea>
         </div>
         <div class="field">
           <label>Bilder</label>
           <div formArrayName="images">
             <div class="fields" *ngFor="let control of images?.controls; index as i; last as l" [formGroupName]="i">
               <input type="hidden" formControlName="id">
-              <div class="nine wide field">
+              <div class="eight wide field">
                 <input formControlName="url" placeholder="URL für Bild {{i+1}} (http://bild{{i+1}}.jpg)">
               </div>
               <div class="six wide field">
                 <input formControlName="title" placeholder="Titel für Bild {{i+1}}">
               </div>
-              <div class="one wide field" *ngIf="l">
-                <button (click)="addThumbnailControl()" class="ui large button" type="button">+</button>
+              <div class="two wide field" *ngIf="l">
+                <button (click)="addThumbnailControl()" class="ui large fluid button" type="button">+</button>
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@
         </div>
 
 
-        <button type="submit" class="ui button" [disabled]="padletForm.invalid">Speichern</button>
+        <button type="submit" class="ui button submit-btn" [disabled]="padletForm.invalid">Speichern</button>
       </form>
 
     </div>

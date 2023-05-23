@@ -3,20 +3,26 @@
 </div>
 
 <div class="ui grid">
-  <div class="row">
-    <a class="ui labeled icon" [routerLink]="'/board'">
+  <div class="row header-bar">
+    <a class="ui labeled icon backlink" [routerLink]="'/board'">
       <i class="left chevron icon"></i>
       Zurück zur Übersicht
     </a>
   </div>
-  <div class="row">
-    <div class="sixteen wide column">
+  <div class="row centered-row">
+    <div class="ten wide column">
 
-      <div *ngIf="current_user_name != ''">
-        <h2>Hallo {{current_user_name}}!</h2>
+      <div class="flex-between">
+        <div *ngIf="isLoggedIn()">
+          <h2>Tschüss, {{current_user_name}}!</h2>
+        </div>
+
+        <div *ngIf="isLoggedIn()">
+          <button type="button" class="ui button logout-btn" (click)="logout()" routerLink="/">Logout</button>
+        </div>
       </div>
 
-      <h1 *ngIf="isLoggedIn()">Logout</h1>
+<!--      <h1 *ngIf="isLoggedIn()">Logout</h1>-->
       <h1 *ngIf="!isLoggedIn()">Login</h1>
 
 
@@ -42,13 +48,10 @@
               Passwort ist verpflichtend </div>
           </div>
 
-          <button type="submit" class="ui button" [disabled]="loginForm.invalid">Login</button>
+          <button type="submit" class="ui button submit-btn" [disabled]="loginForm.invalid">Login</button>
         </form>
       </div>
 
-      <div *ngIf="isLoggedIn()">
-        <button type="button" class="ui button" (click)="logout()" routerLink="/">Logout</button>
-      </div>
 
     </div>
   </div>
