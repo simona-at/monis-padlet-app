@@ -20,7 +20,7 @@
 
     <div class="{{textColums}}">
 
-      <div *ngIf="authservice.isLoggedIn() && (isEditor  || isOwner)" class="three wide column flex-end padlet-detail-button-row">
+      <div *ngIf="authservice.isLoggedIn() && (isViewer || isEditor  || isOwner)" class="three wide column flex-end padlet-detail-button-row">
         <span class="small-info-text" *ngIf="isViewer">Du bist Betrachter:in dieses Padlets.</span>
         <span class="small-info-text" *ngIf="isEditor">Du bist Redakteur:in dieses Padlet.</span>
 <!--        <span class="small-info-text" *ngIf="isOwner">Du bist Eigentümer:in dieses Padlets.</span>-->
