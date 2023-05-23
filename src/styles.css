@@ -15,7 +15,7 @@
 .flex-between{
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
 }
 
 .bold{
@@ -41,6 +41,30 @@
 /********************************************************************************************/
 /**** PADLET LIST VIEW
 /********************************************************************************************/
+
+.list-view-container{
+  padding-bottom: 60px;
+}
+
+.hallo-user{
+ color: #4183c4;
+}
+
+.padlets-list-headline{
+  border-top: 1px solid rgba(34,36,38,.15);
+  /*border-bottom: 1px solid rgba(34,36,38,.15);*/
+  padding: 20px 0 0;
+  margin: 60px 0 10px;
+}
+
+.info-message{
+  margin: 10px 0 50px;
+}
+
+.padlet-grid{
+  margin-top: 30px !important;
+  margin-bottom: 40px !important;
+}
 
 .custom-flex-card{
   display: flex !important;
@@ -69,23 +93,32 @@
   margin-bottom: 30px;
 }
 
+.padlet-detail-visibility{
+  margin-bottom: 30px;
+  color: rgba(0,0,0,.4);
+}
+
 .padlet-detail-data .date{
   color: rgba(0,0,0,.4);
 }
 
 
-
 .padlet-detail-data .like-btn{
   color: #db2828 !important;
-  font-size: 26px !important;
-  padding: 0 !important;
+  font-size: 12px !important;
+  padding: 0 0 10px 0 !important;
   background: none !important;
-  margin: 0!important;
+  margin: 0  !important;
+  display: flex;
+  align-items: center;
 }
 
 .padlet-detail-data .like-btn .icon{
   margin: 0 !important;
   transition: 200ms ease-in-out all !important;
+  font-size: 26px;
+  margin-left: 10px !important;
+  margin-bottom: 5px !important;
 }
 
 .padlet-detail-data .like-btn:hover .icon{

@@ -27,6 +27,8 @@ export class PadletUsersFormComponent implements OnInit{
   ownerName : string = "";
   ownerEmail : string = "";
 
+  owner : User | undefined;
+
   loading : boolean = true;
 
 
@@ -81,11 +83,9 @@ export class PadletUsersFormComponent implements OnInit{
 
 
   initUsers(){
-    this.getOwnerName();
-    this.getOwnerEmail();
-
+    this.getOwner();
+    this.setOwnerNameAndEmail();
     this.buildUsersArray();
-
     this.padletUserForm = this.fb.group({
       users : this.users
     });
@@ -94,16 +94,14 @@ export class PadletUsersFormComponent implements OnInit{
 
   buildUsersArray(){
     if (this.padlet.users){
-      let index = 1;
       for (let user of this.padlet.users){
-        if(index != 1){
+        if(user.pivot?.user_role != "owner"){
           let fg = this.fb.group({
             email: new FormControl(user.email, [Validators.required]),
             user_role: new FormControl(user.pivot?.user_role, [Validators.required])
           });
           this.users.push(fg);
         }
-        index++;
       }
       if(this.padlet.users.length < 2){
         this.addUserControl();
@@ -188,17 +186,24 @@ export class PadletUsersFormComponent implements OnInit{
   }
 
 
-  getOwnerName(){
-    if(this.padlet.users) {
-      let user = this.padlet.users[0];
-      if(user) this.ownerName = user.first_name + " " + user.last_name;
+  getOwner(){
+    if(this.padlet.users){
+      for (let user of this.padlet.users){
+        if(user.pivot?.user_role == "owner"){
+          this.owner = user;
+          return true;
+        }
+      }
+    }
+    this.owner = undefined;
+    return false;
+  }
+
+  setOwnerNameAndEmail(){
+    if(this.owner) {
+      this.ownerName = this.owner.first_name + " " + this.owner.last_name;
+      this.ownerEmail = this.owner.email + "";
     }
   }
 
-  getOwnerEmail(){
-    if(this.padlet.users) {
-      let user = this.padlet.users[0];
-      if(user) this.ownerEmail = user.email + "";
-    }
-  }
 }

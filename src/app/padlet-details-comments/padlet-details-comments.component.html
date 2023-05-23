@@ -5,7 +5,7 @@
 
   <div class="ui comments">
   <!--  <h3 class="ui dividing header" *ngIf="!renderComments">Keine Kommentare vorhanden</h3>-->
-    <span *ngIf="commentCount == 0">Es sind noch keine Kommentare vorhanden. <span class="bold" *ngIf="authservice.isLoggedIn()">Schreib den ersten Kommentar!</span></span>
+    <p *ngIf="commentCount == 0">Es sind noch keine Kommentare vorhanden. <span class="bold" *ngIf="authservice.isLoggedIn()">Schreib den ersten Kommentar!</span></p>
 
     <div class="comment" *ngFor="let comment of padlet?.comments">
       <span class="avatar">

@@ -13,21 +13,21 @@ import {AuthenticationService} from "../shared/authentication.service";
 })
 export class PadletListComponent implements OnInit {
 
+  loading : boolean = true;
+
   padlets : Padlet[] = [];
   privatePadlets : Padlet[] = [];
   publicPadlets : Padlet[] = [];
 
-  users : User[] = [];
+  privatePadletsCount : number = 0;
+  publicPadletsCount : number = 0;
 
+  users : User[] = [];
   user : User | undefined;
 
-  currentUser = false;
-  currentUserCanView = false;
-
-  current_user_name = "";
-
-  loading = true;
-
+  currentUser : boolean = false;
+  currentUserCanView : boolean = false;
+  current_user_name : string = "";
 
   constructor(private pb: PadletBoardService,
               private toastr: ToastrService,
@@ -45,6 +45,7 @@ export class PadletListComponent implements OnInit {
     this.pb.getAll().subscribe(res => {
       this.padlets = res;
       this.initPadletList();
+      this.getPadletCounts();
       this.loading = false;
       // this.toastr.success('Padlets wurden erfolgreich geladen',  '', { timeOut: 1500 });
     });
@@ -87,6 +88,14 @@ export class PadletListComponent implements OnInit {
     }
   }
 
+  getPadletCounts(){
+    if(this.publicPadlets) {
+      this.publicPadletsCount = this.publicPadlets.length;
+    }
+    if(this.privatePadlets) {
+      this.privatePadletsCount = this.privatePadlets.length;
+    }
+  }
 
   numberToString(id: number){
     return String(id);

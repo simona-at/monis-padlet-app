@@ -35,9 +35,13 @@
       </div>
 
       <div class="padlet-detail-data">
+        <p *ngIf="!padlet.is_private" class="padlet-detail-visibility"><i class="globe icon"></i> Dieses Padlet ist öffentlich.</p>
+        <p *ngIf="padlet.is_private" class="padlet-detail-visibility"><i class="lock icon"></i> Dieses Padlet ist privat.</p>
+
         <div class="flex-between">
-          <h1>{{padlet.title}}</h1>
+          <h1 class="padlet-detail-title">{{padlet.title}}</h1>
           <button *ngIf="authservice.isLoggedIn()" class="ui button like-btn" (click)="like()">
+            Like dieses Padlet
             <i class="heart icon {{this.likeBtn}}"></i>
           </button>
         </div>

@@ -2,17 +2,23 @@
   <div class="ui text loader large">Lade Monis Padlet…</div>
 </div>
 
-<h1 *ngIf="current_user_name != ''">Hallo {{current_user_name}}!</h1>
+<div class="list-view-container">
 
-<h2 *ngIf="currentUser">Private Padlets</h2>
-<div *ngIf="currentUser" class="ui four column grid">
-  <a *ngFor="let padlet of privatePadlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
-</div>
+  <h1 class="hallo-user" *ngIf="current_user_name != ''">Hallo {{current_user_name}}!</h1>
+
+  <h2 *ngIf="currentUser" class="padlets-list-headline">Private Padlets</h2>
+  <p class="info-message" *ngIf="privatePadletsCount == 0 && currentUser">Es sind noch keine privaten Padlets vorhanden. <a class="bold" *ngIf="currentUser" routerLink="../create">Erstelle jetzt ein neues Padlet!</a></p>
+  <div *ngIf="currentUser" class="ui four column grid padlet-grid">
+    <a *ngFor="let padlet of privatePadlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
+  </div>
 
 
 
-<h2>Öffentliche Padlets</h2>
-<div class="ui four column grid">
-  <a *ngFor="let padlet of publicPadlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
+  <h2 class="padlets-list-headline">Öffentliche Padlets</h2>
+  <p class="info-message" *ngIf="publicPadletsCount == 0">Es sind noch keine öffentlichen Padlets vorhanden. <a class="bold" routerLink="../create">Erstelle jetzt ein neues Padlet!</a></p>
+  <div class="ui four column grid padlet-grid">
+    <a *ngFor="let padlet of publicPadlets.slice().reverse()" class="column custom-flex-card bs-padlet-list-item" [padlet]="padlet" [routerLink]="numberToString(padlet.id)"></a>
+  </div>
+
 </div>
 
