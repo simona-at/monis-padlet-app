@@ -9,6 +9,7 @@ import {PadletFactory} from "../shared/padlet-factory";
 import {Pivot} from "../shared/pivot";
 import {PadletFormErrorMessages} from "../padlet-form/padlet-form-error-messages";
 import {ToastrService} from "ngx-toastr";
+import {keyframes} from "@angular/animations";
 
 @Component({
   selector: 'bs-padlet-users-form',
@@ -97,8 +98,8 @@ export class PadletUsersFormComponent implements OnInit{
       for (let user of this.padlet.users){
         if(user.pivot?.user_role != "owner"){
           let fg = this.fb.group({
-            email: new FormControl(user.email, [Validators.required]),
-            user_role: new FormControl(user.pivot?.user_role, [Validators.required])
+            email: new FormControl(user.email),
+            user_role: new FormControl(user.pivot?.user_role)
           });
           this.users.push(fg);
         }
@@ -140,8 +141,7 @@ export class PadletUsersFormComponent implements OnInit{
           { timeOut: 3500 }
         );
         return;
-      }
-      else if(newUser.email == this.ownerEmail){
+      } else if(newUser.email == this.ownerEmail){
         this.toastr.error(
           'Der:die Nutzer:in der angegebenen E-Mail-Adresse ist Eigentümer:in des Padlets!',
           'Fehler beim Speichern',
