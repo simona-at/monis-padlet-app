@@ -18,20 +18,25 @@ import {UserService} from "../shared/user.service";
   ]
 })
 export class PadletDetailsComponent {
+
   padlet: Padlet = PadletFactory.empty();
+
   users : User[]= [];
-  likeBtn = "not_liked";
   editors : User[] = [];
-  isEditor = false;
-  isOwner = false;
-  owner: User | undefined;
-  likeable = true;
+  owner : User | undefined;
 
+  padletHasImages : boolean = true;
+  likeable : boolean = true;
+  isEditor : boolean = false;
+  isOwner : boolean = false;
+  loading : boolean = true;
 
+  textColums : string = "eight wide column";
+  likeBtn : string = "not_liked";
+  ownerName : string = "Anonyme:r Nutzer:in";
 
-  padletHasImages = true;
-
-  textColums = "eight wide column";
+  likeCount : number = 0;
+  commentCount : number = 0;
 
 
   constructor(private fb: FormBuilder,
@@ -44,28 +49,27 @@ export class PadletDetailsComponent {
   ) {}
 
   ngOnInit(){
-
     const params = this.route.snapshot.params;
     this.pb.getSingle(params['id']).subscribe((p:Padlet) => {
       this.padlet = p;
-      this.hasImages();
-      this.initLikeBtn();
-      this.getEditors();
-      this.getOwner();
-      this.canUserEdit();
+      this.initPadlet();
+      this.loading = false;
+      // this.toastr.success('Padlet wurde geladen', '', { timeOut: 1500 });
     });
-
-    if(this.padlet.likes) {
-      if(this.padlet.likes.length > 0){
-        for (let like of this.padlet.likes) {
-          if (like['user_id'] == this.getCurrentUserId()) {
-            this.likeBtn = "liked";
-            break;
-          }
-        }
-      }
-    }
   }
+
+
+  initPadlet(){
+    this.hasImages();
+    this.initLikeBtn();
+    this.getEditors();
+    if(this.getOwner()){
+      this.ownerName = this.owner?.first_name + " " + this.owner?.last_name;
+    }
+    this.canUserEdit();
+    this.initLikesAndComments();
+  }
+
 
   removePadlet(){
     if( confirm("Soll dieses Padlet wirklich gelöscht werden?")){
@@ -73,21 +77,25 @@ export class PadletDetailsComponent {
         this.router.navigate(['../'], {relativeTo: this.route});
         this.toastr.success('Padlet wurde erfolgreich gelöscht');
       });
-
     }
   }
 
-
-  getCurrentUserId() : number{
-    return this.userservice.getCurrentUserId();
+  initLikesAndComments(){
+    if(this.padlet){
+      if(this.padlet.likes) {
+        this.likeCount = this.padlet.likes.length;
+      }
+      if(this.padlet.comments) {
+        this.commentCount = this.padlet.comments.length;
+      }
+    }
   }
-
 
   initLikeBtn(){
     if(this.padlet.likes) {
       if(this.padlet.likes.length > 0){
         for (let like of this.padlet.likes) {
-          if (like['user_id'] == this.getCurrentUserId()) {
+          if (like['user_id'] == this.userservice.getCurrentUserId()) {
             this.likeable = false;
             break;
           }
@@ -112,7 +120,7 @@ export class PadletDetailsComponent {
   }
 
   likePadlet(){
-    let user_id = this.getCurrentUserId();
+    let user_id = this.userservice.getCurrentUserId();
     const like = new Like(user_id);
     this.padlet.likes?.push(like);
 
@@ -128,7 +136,7 @@ export class PadletDetailsComponent {
   }
 
   dislikePadlet(){
-    this.pb.dislike(this.padlet, this.getCurrentUserId()).subscribe(res => {
+    this.pb.dislike(this.padlet, this.userservice.getCurrentUserId()).subscribe(res => {
       this.router.navigate(["../../board", this.padlet.id], {
         relativeTo: this.route
       });
@@ -166,9 +174,12 @@ export class PadletDetailsComponent {
       for (let user of this.padlet.users){
         if(user.pivot?.user_role == "owner"){
           this.owner = user;
+          return true;
         }
       }
     }
+    this.owner = undefined;
+    return false;
   }
 
   canUserEdit(){

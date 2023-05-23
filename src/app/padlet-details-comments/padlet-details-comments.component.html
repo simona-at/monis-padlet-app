@@ -1,16 +1,19 @@
 
+  <h3 class="ui dividing header" >Kommentare</h3>
+
 <form *ngIf="authservice.isLoggedIn()"  class="ui large form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
   <div class="field">
 <!--    <label>Neuer Kommentar</label>-->
-    <textarea formControlName="comment" rows="3" placeholder="Neuen Kommentar schreiben…"></textarea>
+    <textarea formControlName="comment" rows="2" placeholder="Neuen Kommentar schreiben…"></textarea>
   </div>
   <button type="submit" class="ui button" [disabled]="commentForm.invalid">Senden</button>
 </form>
 
 
 <div class="ui comments">
-  <h3 class="ui dividing header" >Alle Kommentare</h3>
 <!--  <h3 class="ui dividing header" *ngIf="!renderComments">Keine Kommentare vorhanden</h3>-->
+  <span *ngIf="commentCount == 0">Es sind noch keine Kommentare vorhanden. <span *ngIf="authservice.isLoggedIn">Schreib den ersten Kommentar!</span></span>
+
   <div class="comment" *ngFor="let comment of padlet?.comments">
     <div class="content">
       <span class="author" *ngFor="let user of userservice.users">

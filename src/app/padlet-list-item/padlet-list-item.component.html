@@ -1,9 +1,7 @@
 <div class="ui fluid card">
   <div class="content">
     <div class="right floated meta">{{padlet?.created_at | date:"dd.MM.yyyy"}}</div>
-    <span *ngFor="let user of padlet?.users; let isFirst = first">
-      <span *ngIf="isFirst">{{user.first_name}} {{user.last_name}}</span>
-    </span>
+    <span>{{ownerName}}</span>
     <span *ngIf="padlet?.users == null">
       <span>Anonym</span>
     </span>
@@ -17,17 +15,13 @@
   <div class="extra content">
         <span class="right floated">
           <i class="heart outline icon"></i>
-          <span *ngIf="padlet?.likes == null">0</span>
-          <span *ngFor="let like of padlet?.likes; count as c; last as l">
-            <span *ngIf="l">{{c}}</span>
-          </span>
-        Likes
+          {{likeCount}}
+          <span *ngIf="likeCount != 1">Likes</span>
+        <span *ngIf="likeCount == 1">Like</span>
         </span>
         <i class="comment outline icon"></i>
-        <span *ngIf="padlet?.comments == null">0</span>
-        <span *ngFor="let comment of padlet?.comments; count as c; last as l">
-          <span *ngIf="l">{{c}}</span>
-        </span>
-        Kommentare
+    {{commentCount}}
+    <span *ngIf="commentCount != 1">Kommentare</span>
+    <span *ngIf="commentCount == 1">Kommentar</span>
   </div>
 </div>

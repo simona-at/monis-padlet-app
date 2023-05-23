@@ -27,6 +27,7 @@ export class PadletFormComponent implements OnInit{
   errors : { [key : string]: string } = {};
   isUpdatingPadlet= false;
   images : FormArray;
+  loading: boolean = true;
 
   currentId = this.route.snapshot.params["id"];
   backlink = "/board/"+this.currentId;
@@ -52,18 +53,16 @@ export class PadletFormComponent implements OnInit{
         padlet => {
           this.padlet = padlet;
           this.initPadlet();
+          this.loading = false;
         }
       );
     }
     this.initPadlet();
+    this.loading = false;
   }
 
   initPadlet(){
     this.buildThumbnailsArray();
-
-    console.log(this.padlet.users);
-
-    let users = this.padlet.users;
 
     if(this.isUpdatingPadlet || !this.userservice.getCurrentUser()){
       this.padletForm = this.fb.group({
@@ -72,7 +71,7 @@ export class PadletFormComponent implements OnInit{
         description: [this.padlet.description],
         images: this.images,
         is_private : this.padlet.is_private,
-        users : [users]
+        users : [this.padlet.users]
       });
     } else {
       this.padletForm = this.fb.group({
@@ -128,6 +127,19 @@ export class PadletFormComponent implements OnInit{
   }
 
   submitForm(){
+
+    for(let image of this.padletForm.value.images){
+      if((image.url != "" && image.title == "") ||
+        (image.url == "" && image.title != "")){
+        this.toastr.error(
+          'Bei angegebenen Bilder müssen URL und Titel angegeben werden!',
+          'Fehler beim Speichern',
+          { timeOut: 3500 }
+        );
+        return;
+      }
+    }
+
     this.padletForm.value.images = this.padletForm.value.images.filter(
       (thumbnail: {url :string}) => thumbnail.url
     );

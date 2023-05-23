@@ -17,8 +17,11 @@ interface Response {
 })
 export class LoginComponent implements OnInit {
   loginForm : FormGroup;
-  users : User[]= [];
+  users : User[] = [];
+  user : User | undefined;
   current_user_name = "";
+  loading : boolean = true;
+
 
   constructor(private fb : FormBuilder,
               private router : Router,
@@ -29,7 +32,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit():void{
-    this.getCurrentUserName();
+    this.userservice.fetchUsers().subscribe(res =>{
+      this.users = res;
+      this.getCurrentUser();
+      this.getUserName();
+      this.loading = false;
+    });
     this.loginForm = this.fb.group({
       username : ["", [Validators.required, Validators.email]],
       password : ["", [Validators.required]]
@@ -55,10 +63,20 @@ export class LoginComponent implements OnInit {
   }
 
 
-  getCurrentUserName(){
-    const user = this.userservice.getCurrentUser();
-    if(user){
-      this.current_user_name = user.first_name + " " + user.last_name;
+  getCurrentUser(){
+    if(this.users){
+      for(let user of this.users){
+        if(user.id == this.userservice.getCurrentUserId()){
+          this.user = user;
+          break;
+        }
+      }
+    }
+  }
+
+  getUserName(){
+    if(this.user){
+      this.current_user_name = this.user.first_name + "";
     }
   }
 

@@ -24,6 +24,9 @@ export class PadletDetailsCommentsComponent implements OnInit{
   users : User[]= [];
   renderComments = true;
 
+  commentCount : number = 0;
+
+
   constructor(private fb: FormBuilder,
               private pb: PadletBoardService,
               private route: ActivatedRoute,
@@ -37,6 +40,8 @@ export class PadletDetailsCommentsComponent implements OnInit{
   ngOnInit(): void {
 
     this.userservice.getAllUsers();
+    this.getCommentCount();
+
 
     if(this.padlet) {
       this.commentForm = this.fb.group({
@@ -50,6 +55,13 @@ export class PadletDetailsCommentsComponent implements OnInit{
     // else this.renderComments = false;
   }
 
+  getCommentCount(){
+    if(this.padlet){
+      if(this.padlet.comments) {
+        this.commentCount = this.padlet.comments.length;
+      }
+    }
+  }
 
   submitComment(){
     if(this.padlet) {

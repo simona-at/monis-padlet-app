@@ -1,3 +1,6 @@
+<div *ngIf="loading" class="ui active inverted dimmer">
+  <div class="ui text loader large">Lade Monis Padlet…</div>
+</div>
 
 <div class="ui grid">
   <div class="row">
@@ -41,7 +44,6 @@
               <div class="nine wide field">
                 <input formControlName="email" placeholder="E-Mail-Adresse des gewünschten Nutzers">
                 <div *ngIf="errors['email']" class="ui negative message">{{ errors['email'] }}</div>
-
               </div>
               <div class="six wide field">
                 <select formControlName="user_role" ><!--[(ngModel)]='roleDefault' -->
