@@ -3,10 +3,48 @@
 @import 'node_modules/ngx-toastr/toastr.css';
 
 
+/********************************************************************************************/
+/**** GENERAL CLASSES
+/********************************************************************************************/
+
+.flex-end{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-between{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.bold{
+  /*font-weight: bold;*/
+  color: #4183c4;
+}
+
+
+/********************************************************************************************/
+/**** APP
+/********************************************************************************************/
+
+.monis-padlet{
+  width: 90px;
+  margin:30px 0 30px  5px ;
+}
+
+.ui.secondary.menu .item{
+  transition: 200ms ease-in-out all !important;
+}
+
+
+/********************************************************************************************/
+/**** PADLET LIST VIEW
+/********************************************************************************************/
+
 .custom-flex-card{
   display: flex !important;
 }
-
 
 .custom-flex-card .card:hover{
   border: none;
@@ -17,28 +55,110 @@
 }
 
 
-.button.liked{
-  background-color: #2185d0 !important;
-  color: #fff !important;
+/********************************************************************************************/
+/**** PADLET DETAIL VIEW
+/********************************************************************************************/
+
+
+.nine-columns{
+  width: 56.25%!important;
 }
 
-.button.not_liked{
-  background-color: #fff !important;
-  color: #2185d0 !important;
+
+.padlet-detail-button-row{
+  margin-bottom: 30px;
 }
 
+.padlet-detail-data .date{
+  color: rgba(0,0,0,.4);
+}
+
+
+
+.padlet-detail-data .like-btn{
+  color: #db2828 !important;
+  font-size: 26px !important;
+  padding: 0 !important;
+  background: none !important;
+  margin: 0!important;
+}
+
+.padlet-detail-data .like-btn .icon{
+  margin: 0 !important;
+  transition: 200ms ease-in-out all !important;
+}
+
+.padlet-detail-data .like-btn:hover .icon{
+  scale: 1.2;
+}
+
+.padlet-detail-likes-comments{
+  border-top: 1px solid rgba(34,36,38,.15);
+  /*border-bottom: 1px solid rgba(34,36,38,.15);*/
+  padding: 12px 0;
+  margin: 20px 0 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.padlet-detail-likes-comments .likes{
+  margin-right: 25px;
+  color: rgba(0,0,0,.4);
+}
+
+.padlet-detail-likes-comments .comments{
+  margin-right: 15px;
+  color: rgba(0,0,0,.4);
+}
+
+.comment-container{
+  margin-bottom: 80px;
+}
+
+.comment-container .comment-header{
+  border-top: 1px solid rgba(34,36,38,.15);
+  padding: 12px 0;
+  margin: 50px 0 20px !important;
+  display: block;
+}
+
+.comment-container .comment-form{
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-top: 40px;
+  border-bottom: 1px solid rgba(34,36,38,.15);
+  padding: 25px 0;
+}
+
+.comment-container .comment-form .field{
+  flex-grow: 1;
+  margin-right: 20px;
+  margin-bottom: 0!important;
+}
+
+
+
+/*.button.liked{*/
+/*  background-color: #2185d0 !important;*/
+/*  color: #fff !important;*/
+/*}*/
+
+/*.button.not_liked{*/
+/*  background-color: #fff !important;*/
+/*  color: #2185d0 !important;*/
+/*}*/
+
+
+
+
+
+/********************************************************************************************/
+/**** PADLET EDIT USER FORM
+/********************************************************************************************/
 
 .form-lock-icon{
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.widthimportant{
-  width: 81.25%!important;
-}
-
-
-.likesComments{
-  
 }

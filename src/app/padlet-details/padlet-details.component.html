@@ -13,7 +13,7 @@
   </div>
   <div class="row">
 
-    <div class="five wide column" *ngIf="padletHasImages">
+    <div class="seven wide column" *ngIf="padletHasImages">
       <div *ngFor="let image of padlet?.images" >
         <img [src]="image.url" [alt]="image.title" style="width: 100%;">
       </div>
@@ -21,38 +21,42 @@
 
     <div class="{{textColums}}">
 
-      <div class="three wide column">
-        <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny gray labeled icon button fluid" [routerLink]="['../../edit/', padlet.id]">
+      <div *ngIf="authservice.isLoggedIn() && isEditor" class="three wide column flex-end padlet-detail-button-row">
+        <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny basic button" [routerLink]="['../../edit/', padlet.id]">
           <i class="write icon"></i> Padlet bearbeiten
         </button>
-        <button *ngIf="authservice.isLoggedIn() && isOwner" class="ui tiny gray labeled icon button fluid" [routerLink]="['../../users/', padlet.id]">
+        <button *ngIf="authservice.isLoggedIn() && isOwner" class="ui tiny basic button" [routerLink]="['../../users/', padlet.id]">
           <i class="user icon"></i> Nutzer:innen bearbeiten
         </button>
 
-        <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny gray labeled icon button fluid" (click)="removePadlet()">
+        <button *ngIf="authservice.isLoggedIn() && isEditor" class="ui tiny basic button" (click)="removePadlet()">
           <i class="trash icon"></i> Padlet löschen
         </button>
-
-        <button *ngIf="authservice.isLoggedIn()" class="ui primary basic button fluid {{this.likeBtn}}" (click)="like()">LIKE</button>
       </div>
 
-      <h1>{{padlet.title}}</h1>
-      <p>
-        <span class="author">{{ownerName}}</span>
-        <span class="metadata">
-          <span class="date">&nbsp;am {{padlet.created_at | date:"dd.MM.yyyy"}}</span>
-        </span>
-      </p>
+      <div class="padlet-detail-data">
+        <div class="flex-between">
+          <h1>{{padlet.title}}</h1>
+          <button *ngIf="authservice.isLoggedIn()" class="ui button like-btn" (click)="like()">
+            <i class="heart icon {{this.likeBtn}}"></i>
+          </button>
+        </div>
+        <p>
+          <span class="bold">{{ownerName}}</span>
+          <span class="metadata">
+            <span class="date">&nbsp;am {{padlet.created_at | date:"dd.MM.yyyy"}}</span>
+          </span>
+        </p>
+      </div>
 
-
-      <div class="extra content likesComments">
-        <span>
+      <div class="extra content padlet-detail-likes-comments">
+        <span class="likes">
           <i class="heart outline like icon"></i>
           {{likeCount}}
           <span *ngIf="likeCount != 1">Likes</span>
           <span *ngIf="likeCount == 1">Like</span>
         </span>
-        <span>
+        <span class="comments">
           <i class="comment outline icon"></i>
           {{commentCount}}
           <span *ngIf="commentCount != 1">Kommentare</span>
@@ -63,7 +67,7 @@
 
       <p>{{padlet.description}}</p>
 
-      <bs-padlet-details-comments [padlet]="padlet"></bs-padlet-details-comments>
+      <bs-padlet-details-comments [padlet]="padlet" [commentCount]="commentCount"></bs-padlet-details-comments>
     </div>
 
 

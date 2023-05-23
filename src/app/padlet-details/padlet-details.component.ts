@@ -32,7 +32,7 @@ export class PadletDetailsComponent {
   loading : boolean = true;
 
   textColums : string = "eleven wide column";
-  likeBtn : string = "not_liked";
+  likeBtn : string = "outline";
   ownerName : string = "Anonyme:r Nutzer:in";
 
   likeCount : number = 0;
@@ -103,7 +103,7 @@ export class PadletDetailsComponent {
       }
     }
     if(this.likeable){
-      this.likeBtn = "not_liked";
+      this.likeBtn = "outline";
     } else{
       this.likeBtn = "liked";
     }
@@ -112,10 +112,8 @@ export class PadletDetailsComponent {
   like() {
     if(this.likeable){
       this.likePadlet();
-      // this.likeBtn = "not_liked";
     } else{
       this.dislikePadlet();
-      // this.likeBtn = "liked";
     }
   }
 
@@ -140,7 +138,7 @@ export class PadletDetailsComponent {
       this.router.navigate(["../../board", this.padlet.id], {
         relativeTo: this.route
       });
-      this.likeBtn = "not_liked";
+      this.likeBtn = "outline";
       this.likeable = true;
       this.ngOnInit();
     });
@@ -149,11 +147,11 @@ export class PadletDetailsComponent {
   hasImages(){
     if(this.padlet.images) {
       if (this.padlet?.images.length == 0) {
-        this.textColums = "thirteen wide column widthimportant";
+        this.textColums = "wide column";
         this.padletHasImages = false;
       }
       else {
-        this.textColums = "eleven wide column";
+        this.textColums = "nine wide column nine-columns";
         this.padletHasImages = true;
       }
     }

@@ -19,12 +19,13 @@ import {toNumbers} from "@angular/compiler-cli/src/version_helpers";
 export class PadletDetailsCommentsComponent implements OnInit{
 
   @Input() padlet : Padlet | undefined
+  @Input() commentCount : number | undefined
 
   commentForm : FormGroup;
   users : User[]= [];
   renderComments = true;
 
-  commentCount : number = 0;
+  // commentCount : number = 0;
 
 
   constructor(private fb: FormBuilder,
@@ -59,6 +60,7 @@ export class PadletDetailsCommentsComponent implements OnInit{
     if(this.padlet){
       if(this.padlet.comments) {
         this.commentCount = this.padlet.comments.length;
+        console.log(this.padlet)
       }
     }
   }

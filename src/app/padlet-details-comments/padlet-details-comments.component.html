@@ -1,30 +1,35 @@
 
-  <h3 class="ui dividing header" >Kommentare</h3>
-
-<form *ngIf="authservice.isLoggedIn()"  class="ui large form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
-  <div class="field">
-<!--    <label>Neuer Kommentar</label>-->
-    <textarea formControlName="comment" rows="2" placeholder="Neuen Kommentar schreiben…"></textarea>
-  </div>
-  <button type="submit" class="ui button" [disabled]="commentForm.invalid">Senden</button>
-</form>
+<div class="comment-container" id="comments">
+  <span class="ui header comment-header" >Kommentare</span>
 
 
-<div class="ui comments">
-<!--  <h3 class="ui dividing header" *ngIf="!renderComments">Keine Kommentare vorhanden</h3>-->
-  <span *ngIf="commentCount == 0">Es sind noch keine Kommentare vorhanden. <span *ngIf="authservice.isLoggedIn">Schreib den ersten Kommentar!</span></span>
+  <div class="ui comments">
+  <!--  <h3 class="ui dividing header" *ngIf="!renderComments">Keine Kommentare vorhanden</h3>-->
+    <span *ngIf="commentCount == 0">Es sind noch keine Kommentare vorhanden. <span class="bold" *ngIf="authservice.isLoggedIn()">Schreib den ersten Kommentar!</span></span>
 
-  <div class="comment" *ngFor="let comment of padlet?.comments">
-    <div class="content">
-      <span class="author" *ngFor="let user of userservice.users">
-        <span *ngIf="comment.user_id == user.id">{{user.first_name}} {{user.last_name}}</span>
+    <div class="comment" *ngFor="let comment of padlet?.comments">
+      <span class="avatar">
+        <img src="../../assets/user.png" alt="Avatar Platzhalter">
       </span>
-      <div class="metadata">
-        <span class="date">&nbsp;am {{comment.created_at | date:"dd.MM.yyyy"}}</span>
-      </div>
-      <div class="text">
-        {{comment.content}}
+      <div class="content">
+        <span class="author" *ngFor="let user of userservice.users">
+          <span *ngIf="comment.user_id == user.id">{{user.first_name}} {{user.last_name}}</span>
+        </span>
+        <div class="metadata">
+          <span class="date">&nbsp;am {{comment.created_at | date:"dd.MM.yyyy"}}</span>
+        </div>
+        <div class="text">
+          {{comment.content}}
+        </div>
       </div>
     </div>
   </div>
+
+  <form *ngIf="authservice.isLoggedIn()"  class="ui large form comment-form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
+    <div class="field">
+      <textarea formControlName="comment" rows="1" placeholder="Neuen Kommentar schreiben…"></textarea>
+    </div>
+    <button type="submit" class="ui button" [disabled]="commentForm.invalid">Senden</button>
+  </form>
+
 </div>

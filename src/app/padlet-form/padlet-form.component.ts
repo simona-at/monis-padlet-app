@@ -182,7 +182,6 @@ export class PadletFormComponent implements OnInit{
         });
         this.toastr.success('Padlet wurde erstellt!');
       });
-
     }
   }
 
