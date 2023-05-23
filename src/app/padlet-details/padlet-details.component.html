@@ -28,7 +28,7 @@
         <button *ngIf="authservice.isLoggedIn() && isOwner" class="ui tiny basic button padlet-edit-buttons" [routerLink]="['../../users/', padlet.id]">
           <i class="user icon"></i> Nutzer:innen bearbeiten
         </button>
-        <button *ngIf="authservice.isLoggedIn() && (isEditor  || isOwner)" class="ui tiny basic button padlet-edit-buttons" (click)="removePadlet()">
+        <button *ngIf="authservice.isLoggedIn() && (isOwner)" class="ui tiny basic button padlet-edit-buttons" (click)="removePadlet()">
           <i class="trash icon"></i> Padlet löschen
         </button>
       </div>
