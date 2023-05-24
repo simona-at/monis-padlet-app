@@ -7,11 +7,7 @@ import {AuthenticationService} from "./shared/authentication.service";
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-
-  // listOn = true;
-  // detailsOn = false;
   title = 'padlet';
-
   padlet : Padlet | undefined;
 
   constructor(private authservice: AuthenticationService) {}

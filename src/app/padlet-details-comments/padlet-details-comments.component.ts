@@ -5,10 +5,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PadletBoardService} from "../shared/padlet-board.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
-import {PadletFactory} from "../shared/padlet-factory";
 import {UserService} from "../shared/user.service";
 import {AuthenticationService} from "../shared/authentication.service";
-import {toNumbers} from "@angular/compiler-cli/src/version_helpers";
 
 @Component({
   selector: 'bs-padlet-details-comments',
@@ -22,7 +20,9 @@ export class PadletDetailsCommentsComponent implements OnInit{
   @Input() commentCount : number | undefined;
 
   commentForm : FormGroup;
+
   users : User[]= [];
+
   renderComments = true;
 
   constructor(private fb: FormBuilder,
@@ -35,6 +35,11 @@ export class PadletDetailsCommentsComponent implements OnInit{
     this.commentForm = this.fb.group({});
   }
 
+  /**
+   * Diese Methode wird beim Initialisieren der Komponente aufgerufen. Zuerst wird die Methode getAllUsers()
+   * des UserService aufgerufen, um alle Benutzer abzurufen. Dann wird das commentForm-FormGroup erstellt und mit
+   * den vorhandenen Kommentaren des Padlets initialisiert, falls ein Padlet vorhanden ist.
+   */
   ngOnInit(): void {
     this.userservice.getAllUsers();
     if(this.padlet) {
@@ -44,6 +49,13 @@ export class PadletDetailsCommentsComponent implements OnInit{
     }
   }
 
+  /**
+   * Diese Methode wird aufgerufen, wenn das Kommentarformular abgeschickt wird. Zuerst wird überprüft, ob ein Padlet vorhanden ist.
+   * Dann wird ein neues Comment-Objekt mit den Werten aus dem Kommentarformular, der aktuellen Benutzer-ID und dem aktuellen
+   * Datum erstellt. Das Kommentar wird dem Padlet hinzugefügt und über die comment()-Methode des PadletBoardService an den Server gesendet.
+   * Nachdem das Kommentar erfolgreich veröffentlicht wurde, wird das Kommentarformular zurückgesetzt und der Benutzer zur entsprechenden
+   * Seite navigiert. Eine Erfolgsmeldung wird angezeigt.
+   */
   submitComment(){
     if(this.padlet) {
       const comment: Comment = new Comment(0, this.commentForm.value['comment'], this.userservice.getCurrentUserId(), new Date());

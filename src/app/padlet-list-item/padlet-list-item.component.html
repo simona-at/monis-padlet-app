@@ -1,15 +1,15 @@
 <div class="ui fluid card">
-  <div class="content">
+  <div class="content namedate">
     <div class="right floated meta">{{padlet?.created_at | date:"dd.MM.yyyy"}}</div>
     <span class="padlet-list-item-owner-name">{{ownerName}}</span>
   </div>
-  <div class="image">
+  <div class="image crop">
     <img *ngIf="padlet && padlet.images && padlet.images[0]" [src]="padlet.images[0].url">
   </div>
-  <div class="content">
+  <div class="content title">
     <h3 class="header">{{ padlet?.title }}</h3>
   </div>
-  <div class="extra content">
+  <div class="extra content likescomments">
         <span class="right floated">
           <i class="heart outline icon"></i>
           {{likeCount}}

@@ -49,6 +49,10 @@
   color: #0da29d;
 }
 
+.green-hover:hover, .header-bar .backlink:hover{
+  color: #096b68;
+}
+
 form{
   margin: 40px 0;
 }
@@ -112,6 +116,20 @@ form .button:hover, .logout-btn:hover{
   box-shadow: 0 1px 3px 0 #bcbdbd, 0 0 0 1px #d4d4d5;
   -webkit-transform: translateY(-3px);
   transform: translateY(-3px);
+}
+
+.card .image.crop{
+  max-height: 150px;
+  overflow: hidden;
+}
+
+.card .likescomments, .card .namedate{
+  flex-grow: unset !important;
+}
+
+.card .title{
+  display: flex !important;
+  align-items: center !important;
 }
 
 .padlet-list-item-owner-name{

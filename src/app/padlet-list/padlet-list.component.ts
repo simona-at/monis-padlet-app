@@ -12,29 +12,37 @@ import {AuthenticationService} from "../shared/authentication.service";
   ]
 })
 export class PadletListComponent implements OnInit {
-
-  loading : boolean = true;
-
   padlets : Padlet[] = [];
   privatePadlets : Padlet[] = [];
   publicPadlets : Padlet[] = [];
 
-  privatePadletsCount : number = 0;
-  publicPadletsCount : number = 0;
-
   users : User[] = [];
   user : User | undefined;
 
+  loading : boolean = true;
   currentUser : boolean = false;
   currentUserCanView : boolean = false;
+
+  privatePadletsCount : number = 0;
+  publicPadletsCount : number = 0;
+
   current_user_name : string = "";
 
   constructor(private pb: PadletBoardService,
               private toastr: ToastrService,
               private userservice : UserService,
-              private authservice : AuthenticationService) {
+              public authservice : AuthenticationService) {
   }
 
+  /**
+   * Diese Methode wird beim Initialisieren der Komponente aufgerufen. Sie überprüft, ob der Benutzer eingeloggt ist,
+   * indem sie die Methode isLoggedIn() des AuthenticationService aufruft. Sie ruft dann die Methode fetchUsers() des
+   * UserService auf, um alle Benutzer abzurufen und speichert sie in der Variable users. Anschließend ruft sie die Methoden
+   * getCurrentUser(), um den aktuellen Benutzer zu ermitteln, und getUserName(), um den Namen des aktuellen Benutzers
+   * festzulegen. Schließlich ruft sie die Methode getAll() des PadletBoardService auf, um alle Padlets abzurufen und
+   * speichert sie in der Variable padlets. Sie ruft dann die Methoden initPadletList() und getPadletCounts() auf, um die
+   * Liste der Padlets zu initialisieren und die Anzahl der öffentlichen und privaten Padlets zu ermitteln.
+   */
   ngOnInit(): void {
     if(this.authservice.isLoggedIn()) this.currentUser = true;
     this.userservice.fetchUsers().subscribe(res =>{
@@ -47,10 +55,13 @@ export class PadletListComponent implements OnInit {
       this.initPadletList();
       this.getPadletCounts();
       this.loading = false;
-      // this.toastr.success('Padlets wurden erfolgreich geladen',  '', { timeOut: 1500 });
     });
   }
 
+  /**
+   * Diese Methode sucht den aktuellen Benutzer in der Liste der Benutzer (users) anhand der Benutzer-ID, die aus
+   * dem UserService stammt. Sie speichert den gefundenen Benutzer in der Variable user.
+   */
   getCurrentUser(){
     if(this.users){
       for(let user of this.users){
@@ -62,13 +73,20 @@ export class PadletListComponent implements OnInit {
     }
   }
 
+  /**
+   * Diese Methode setzt den Namen des aktuellen Benutzers (user.first_name) in der Variable current_user_name.
+   */
   getUserName(){
     if(this.user){
       this.current_user_name = this.user.first_name + "";
     }
   }
 
-
+  /**
+   * Diese Methode durchläuft die Liste der Padlets (padlets) und unterscheidet zwischen privaten und öffentlichen Padlets.
+   * Sie überprüft, ob der aktuelle Benutzer Zugriff auf ein privates Padlet hat, indem sie über die Benutzerliste des
+   * Padlets iteriert. Wenn der Benutzer Zugriff hat, wird das Padlet zur Liste privatePadlets hinzugefügt, andernfalls zur Liste publicPadlets.
+   */
   initPadletList(){
     if(this.padlets){
       for(let padlet of this.padlets){
@@ -88,6 +106,10 @@ export class PadletListComponent implements OnInit {
     }
   }
 
+  /**
+   * Diese Methode zählt die Anzahl der öffentlichen und privaten Padlets und speichert die Ergebnisse in den Variablen
+   * publicPadletsCount und privatePadletsCount.
+   */
   getPadletCounts(){
     if(this.publicPadlets) {
       this.publicPadletsCount = this.publicPadlets.length;
@@ -97,6 +119,10 @@ export class PadletListComponent implements OnInit {
     }
   }
 
+  /**
+   * Diese Methode konvertiert eine Zahl (ID) in einen Zeichenkettenwert, indem sie die Funktion String() aufruft und das Ergebnis zurückgibt.
+   * @param id
+   */
   numberToString(id: number){
     return String(id);
   }

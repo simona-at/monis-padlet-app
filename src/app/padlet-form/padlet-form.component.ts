@@ -17,19 +17,19 @@ import {AuthenticationService} from "../shared/authentication.service";
   ]
 })
 export class PadletFormComponent implements OnInit{
-
-  //set default for visability select field
-  visabilityDefault = 0;
-
-
   padletForm : FormGroup;
-  padlet : Padlet = PadletFactory.empty();
-  errors : { [key : string]: string } = {};
-  isUpdatingPadlet= false;
   images : FormArray;
-  loading: boolean = true;
+
+  padlet : Padlet = PadletFactory.empty();
   currentUser : User | undefined;
   users : User[] = [];
+
+  errors : { [key : string]: string } = {};
+
+  isUpdatingPadlet : boolean = false;
+  loading: boolean = true;
+
+  visabilityDefault : number = 0;
 
   currentId = this.route.snapshot.params["id"];
   backlink = "/board/"+this.currentId;
@@ -45,12 +45,18 @@ export class PadletFormComponent implements OnInit{
     this.images = this.fb.array([]);
   }
 
+  /**
+   * Diese Methode wird beim Initialisieren der Komponente aufgerufen. Zuerst werden die Benutzer mithilfe des UserService
+   * abgerufen und in der Variable users gespeichert. Dann wird die getCurrentUser()-Methode aufgerufen, um den aktuellen Benutzer
+   * zu ermitteln. Anschließend wird die id aus der aktuellen Route extrahiert, um festzustellen, ob das Padlet aktualisiert wird.
+   * Wenn eine id vorhanden ist, wird die getSingle()-Methode des PadletBoardService aufgerufen, um das entsprechende
+   * Padlet abzurufen. Das abgerufene Padlet wird dann initialisiert und die Ladevariable loading wird auf false gesetzt.
+   */
   ngOnInit(): void {
     this.userservice.fetchUsers().subscribe(res =>{
       this.users = res;
       this.currentUser = this.getCurrentUser();
     });
-
     const id = this.route.snapshot.params["id"];
     if(id) {
       this.isUpdatingPadlet = true;
@@ -66,6 +72,11 @@ export class PadletFormComponent implements OnInit{
     this.loading = false;
   }
 
+  /**
+   * Diese Methode durchläuft die Liste der Benutzer (users) und vergleicht die id jedes Benutzers mit der aktuellen Benutzer-ID,
+   * die aus dem UserService stammt. Wenn eine Übereinstimmung gefunden wird, wird der entsprechende Benutzer zurückgegeben,
+   * andernfalls wird undefined zurückgegeben.
+   */
   getCurrentUser(){
     for(let user of this.users){
       if(user.id == this.userservice.getCurrentUserId()){
@@ -75,6 +86,12 @@ export class PadletFormComponent implements OnInit{
     return undefined;
   }
 
+  /**
+   * Diese Methode initialisiert das padletForm-FormGroup basierend auf dem aktuellen Padlet und dem aktuellen Benutzer.
+   * Wenn das Padlet aktualisiert wird oder kein aktueller Benutzer vorhanden ist, wird das Formular mit den entsprechenden
+   * Werten initialisiert. Andernfalls wird das Formular mit einem leeren Array für die Benutzer initialisiert. Die Methode
+   * updateErrorMessages() wird abonniert, um die Fehlermeldungen im Formular zu aktualisieren.
+   */
   initPadlet(){
     this.buildThumbnailsArray();
 
@@ -100,7 +117,12 @@ export class PadletFormComponent implements OnInit{
     this.padletForm.statusChanges.subscribe(() => this.updateErrorMessages());
   }
 
-
+  /**
+   * Diese Methode erstellt das FormArray images basierend auf den Bildern des Padlets. Wenn das Padlet aktualisiert wird,
+   * wird ein leeres Image-Objekt (Image(0, '', '')) am Ende des padlet.images-Arrays hinzugefügt. Dann wird das images-FormArray
+   * erstellt, indem es über die padlet.images-Liste iteriert und für jedes Bild ein FormGroup mit den entsprechenden
+   * FormControls für id, url und title erstellt.
+   */
   buildThumbnailsArray(){
     if(this.isUpdatingPadlet){
       this.padlet.images?.push(new Image(0, '', ''));
@@ -118,10 +140,17 @@ export class PadletFormComponent implements OnInit{
     }
   }
 
+  /**
+   * Diese Methode fügt ein neues FormGroup für ein Bild zum images-FormArray hinzu.
+   */
   addThumbnailControl(){
     this.images.push(this.fb.group({id:0, url: null, title:null}));
   }
 
+  /**
+   * Diese Methode aktualisiert die Fehlermeldungen im Formular. Sie durchläuft die Liste der Fehlermeldungen (PadletFormErrorMessages)
+   * und überprüft, ob ein Formularsteuerelement den entsprechenden Fehler aufweist. Wenn ein Fehler vorhanden ist, wird er zur errors-Map hinzugefügt.
+   */
   updateErrorMessages(){
     this.errors = {};
     for (const message of PadletFormErrorMessages) {
@@ -139,8 +168,17 @@ export class PadletFormComponent implements OnInit{
     }
   }
 
+  /**
+   * Diese Methode wird aufgerufen, wenn das Formular abgeschickt wird. Zuerst wird überprüft, ob für angegebene Bilder sowohl
+   * eine URL als auch ein Titel angegeben wurden. Wenn nicht, wird eine Fehlermeldung angezeigt. Dann werden leere Einträge
+   * im images-FormArray entfernt. Wenn das Padlet neu erstellt wird und ein aktueller Benutzer vorhanden ist, wird der aktuelle
+   * Benutzer als Eigentümer hinzugefügt. Andernfalls werden die Benutzer auf undefined gesetzt. Das Padlet-Objekt wird
+   * aus den Formularwerten erstellt und entweder über die update()-Methode des PadletBoardService aktualisiert
+   * (bei einem vorhandenen Padlet) oder über die create()-Methode des PadletBoardService erstellt (bei einem neuen Padlet).
+   * Nachdem das Padlet erstellt oder aktualisiert wurde, wird der Benutzer zur entsprechenden Seite navigiert und eine
+   * Erfolgsmeldung angezeigt.
+   */
   submitForm(){
-
     for(let image of this.padletForm.value.images){
       if((image.url != "" && image.title == "") ||
         (image.url == "" && image.title != "")){

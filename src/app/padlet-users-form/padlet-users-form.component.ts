@@ -9,7 +9,6 @@ import {PadletFactory} from "../shared/padlet-factory";
 import {Pivot} from "../shared/pivot";
 import {PadletFormErrorMessages} from "../padlet-form/padlet-form-error-messages";
 import {ToastrService} from "ngx-toastr";
-import {keyframes} from "@angular/animations";
 
 @Component({
   selector: 'bs-padlet-users-form',
@@ -18,28 +17,23 @@ import {keyframes} from "@angular/animations";
   ]
 })
 export class PadletUsersFormComponent implements OnInit{
+  padletUserForm : FormGroup;
+  users : FormArray;
 
-  //set default for user_role select field
-  // roleDefault :string = "viewer";
+  padlet : Padlet = PadletFactory.empty();
+  owner : User | undefined;
+  allUsers : User[] = [];
+  allUsersEmails : String[] = [];
 
-  currentId = this.route.snapshot.params["id"];
-  backlink = "/board/"+this.currentId;
+  errors : { [key : string]: string } = {};
+
+  loading : boolean = true;
 
   ownerName : string = "";
   ownerEmail : string = "";
 
-  owner : User | undefined;
-
-  loading : boolean = true;
-
-
-  padletUserForm : FormGroup;
-  users : FormArray;
-  padlet : Padlet = PadletFactory.empty();
-  errors : { [key : string]: string } = {};
-
-  allUsers : User[] = [];
-  allUsersEmails : String[] = [];
+  currentId = this.route.snapshot.params["id"];
+  backlink = "/board/"+this.currentId;
 
   constructor(
     private fb : FormBuilder,
@@ -54,6 +48,10 @@ export class PadletUsersFormComponent implements OnInit{
     this.padletUserForm = this.fb.group({users: this.users});
   }
 
+  /**
+   * Diese Methode wird beim Initialisieren der Komponente aufgerufen.
+   * Sie ruft die Methode fetchUsers() des UserService auf, um alle Benutzer abzurufen, und initialisiert dann die Benutzerliste.
+   */
   ngOnInit():void{
     this.userservice.fetchUsers().subscribe(res =>{
       this.allUsers = res;
@@ -71,6 +69,9 @@ export class PadletUsersFormComponent implements OnInit{
     }
   }
 
+  /**
+   * Diese Methode durchläuft die Liste aller Benutzer und extrahiert deren E-Mail-Adressen in die Liste allUsersEmails.
+   */
   getAllUsersEmails(){
     if(this.allUsers){
       for(let user of this.allUsers){
@@ -81,8 +82,12 @@ export class PadletUsersFormComponent implements OnInit{
     }
   }
 
-
-
+  /**
+   * Diese Methode wird nach dem Abrufen eines einzelnen Padlet-Objekts aufgerufen.
+   * Sie ruft mehrere Hilfsmethoden auf, um den Besitzer des Padlets zu ermitteln, den Namen und die E-Mail-Adresse
+   * des Besitzers festzulegen und das Formular für die Benutzer zu erstellen. Sie überwacht auch die Änderungen im
+   * Status des Formulars, um Fehlermeldungen zu aktualisieren.
+   */
   initUsers(){
     this.getOwner();
     this.setOwnerNameAndEmail();
@@ -93,13 +98,18 @@ export class PadletUsersFormComponent implements OnInit{
     this.padletUserForm.statusChanges.subscribe(() => this.updateErrorMessages());
   }
 
+  /**
+   * Diese Methode baut das Formular für die Benutzer auf, indem es die Benutzerliste des Padlets durchläuft.
+   * Dabei werden die E-Mail-Adresse und die Benutzerrolle für jeden Benutzer als FormControl hinzugefügt.
+   * Wenn die Benutzerliste weniger als 2 Benutzer enthält, wird ein zusätzliches leeres FormControl hinzugefügt.
+   */
   buildUsersArray(){
     if (this.padlet.users){
       for (let user of this.padlet.users){
         if(user.pivot?.user_role != "owner"){
           let fg = this.fb.group({
-            email: new FormControl(user.email),
-            user_role: new FormControl(user.pivot?.user_role)
+            email: new FormControl(user.email, [Validators.required]),
+            user_role: new FormControl(user.pivot?.user_role, [Validators.required])
           });
           this.users.push(fg);
         }
@@ -110,10 +120,18 @@ export class PadletUsersFormComponent implements OnInit{
     }
   }
 
+  /**
+   * Diese Methode fügt ein leeres FormControl für einen neuen Benutzer zum Formular hinzu.
+   */
   addUserControl(){
     this.users.push(this.fb.group({email: null, user_role:null}));
   }
 
+  /**
+   * Diese Methode aktualisiert die Fehlermeldungen für das Formular.
+   * Sie überprüft, ob die Formularelemente ungültig sind und Fehler enthalten und speichert die entsprechenden
+   * Fehlermeldungen in der errors-Variable.
+   */
   updateErrorMessages(){
     // console.log("Is form invalid? " + this.padletUserForm.invalid);
     this.errors = {};
@@ -132,6 +150,12 @@ export class PadletUsersFormComponent implements OnInit{
     }
   }
 
+  /**
+   * Diese Methode wird aufgerufen, wenn die Benutzerdaten gespeichert werden sollen.
+   * Sie überprüft die eingegebenen Daten auf Validität und zeigt bei Fehlern entsprechende Toastr-Nachrichten an.
+   * Wenn die Daten gültig sind, werden die Benutzerobjekte erstellt und das aktualisierte Padlet mit den neuen
+   * Benutzerdaten an den PadletBoardService gesendet, um es zu aktualisieren.
+   */
   saveUsers(){
     for(let newUser of this.padletUserForm.value.users){
       if(newUser.email == null || newUser.user_role == null){
@@ -185,7 +209,10 @@ export class PadletUsersFormComponent implements OnInit{
     });
   }
 
-
+  /**
+   * Diese Methode sucht den Besitzer des Padlets in der Benutzerliste des Padlets und gibt
+   * true zurück, wenn ein Besitzer gefunden wird, andernfalls false.
+   */
   getOwner(){
     if(this.padlet.users){
       for (let user of this.padlet.users){
@@ -199,6 +226,10 @@ export class PadletUsersFormComponent implements OnInit{
     return false;
   }
 
+  /**
+   * Diese Methode setzt den Namen und die E-Mail-Adresse des Besitzers, falls ein Besitzer existiert.
+   * Diese Informationen werden verwendet, um den Besitzer in der Benutzeroberfläche anzuzeigen.
+   */
   setOwnerNameAndEmail(){
     if(this.owner) {
       this.ownerName = this.owner.first_name + " " + this.owner.last_name;
